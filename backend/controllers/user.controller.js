@@ -99,7 +99,7 @@ export const login = async (req, res) => {
   }
 };
 
-// logout
+// Logout
 export const logout = async (req, res) => {
   try {
     const token = req.cookies.token;
@@ -124,7 +124,7 @@ export const logout = async (req, res) => {
   }
 };
 
-// update
+// Update
 export const updateProfile = async (req, res) => {
   try {
     const { address, fullName } = req.body;
