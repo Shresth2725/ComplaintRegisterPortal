@@ -1,0 +1,37 @@
+import express from "express";
+import {
+  createComplaint,
+  filterComplaintOnStateCity,
+  getAllComplaints,
+  getMyComplaint,
+  updateComplaintStatus,
+} from "../controllers/complaint.controller.js";
+import { protectRoute } from "../middleware/auth.middleware.js";
+import { upload } from "../middleware/uploads.js";
+
+const complaintRouter = express.Router();
+
+complaintRouter.post(
+  "/create-complaint",
+  protectRoute,
+  upload.single("imageUrl"),
+  createComplaint
+);
+
+complaintRouter.get("/get-complaints", protectRoute, getMyComplaint);
+
+complaintRouter.get("/get-all-complaints", protectRoute, getAllComplaints);
+
+complaintRouter.post(
+  "/update-complaint-status/:id",
+  protectRoute,
+  updateComplaintStatus
+);
+
+complaintRouter.get(
+  "/fetch-complaints-city-state",
+  protectRoute,
+  filterComplaintOnStateCity
+);
+
+export default complaintRouter;
