@@ -10,39 +10,48 @@ const complaintSchema = new mongoose.Schema(
     description: {
       type: String,
       required: true,
+      lowercase: true,
+      trim: true,
     },
     latitude: {
       type: String,
       required: true,
       trim: true,
+      lowercase: true,
     },
     longitude: {
       type: String,
       required: true,
       trim: true,
+      lowercase: true,
     },
     city: {
       type: String,
       required: true,
       trim: true,
+      lowercase: true,
     },
     state: {
       type: String,
       required: true,
       trim: true,
+      lowercase: true,
     },
-    address: {
+    landmark: {
       type: String,
       required: true,
       trim: true,
+      lowercase: true,
     },
     imageUrl: {
       type: String,
+      lowercase: true,
     },
     status: {
       type: String,
-      enum: ["New", "In Progress", "Resolved"],
-      default: "New",
+      enum: ["new", "in progress", "resolved"],
+      default: "new",
+      lowercase: true,
     },
   },
   { timestamps: true }
