@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import authRouter from "./routes/auth.route.js";
 import { connectDB } from "./config/db.js";
+import complaintRouter from "./routes/complaint.route.js";
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", authRouter);
+app.use("/api/complaint", complaintRouter);
 
 await connectDB();
 app.listen(PORT, () => console.log("running"));
