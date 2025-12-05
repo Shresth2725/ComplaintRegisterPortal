@@ -8,7 +8,7 @@ const Sidebar = ({ activeTab, setActiveTab, user, logout }) => {
       </div>
 
       <nav className="flex-1 px-4 space-y-2">
-        {["overview", "my-complaints", "new-complaint"].map((tab) => (
+        {["overview", "new-complaint"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -19,7 +19,6 @@ const Sidebar = ({ activeTab, setActiveTab, user, logout }) => {
             }`}
           >
             {tab === "overview" && "📊 Overview"}
-            {tab === "my-complaints" && "📝 My Complaints"}
             {tab === "new-complaint" && "➕ New Complaint"}
           </button>
         ))}

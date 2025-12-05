@@ -74,14 +74,20 @@ const Dashboard = () => {
       />
 
       <main className="flex-1 overflow-y-auto h-screen p-6 md:p-10 bg-gradient-to-br from-slate-900 to-purple-900/10">
-        {activeTab === "overview" && <Overview complaints={complaints} />}
-        {activeTab === "my-complaints" && (
-          <MyComplaints
+        {activeTab === "overview" && (
+          <Overview
             complaints={complaints}
             loading={loading}
             setActiveTab={setActiveTab}
           />
         )}
+        {/* {activeTab === "my-complaints" && (
+          <MyComplaints
+            complaints={complaints}
+            loading={loading}
+            setActiveTab={setActiveTab}
+          />
+        )} */}
         {activeTab === "new-complaint" && (
           <NewComplaint
             formData={formData}
