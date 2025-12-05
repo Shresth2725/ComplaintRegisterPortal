@@ -4,6 +4,8 @@ import {
   filterComplaintOnStateCity,
   getAllComplaints,
   getMyComplaint,
+  updateAfterImageUrl,
+  updateComplaint,
   updateComplaintStatus,
 } from "../controllers/complaint.controller.js";
 import { protectRoute } from "../middleware/auth.middleware.js";
@@ -32,6 +34,20 @@ complaintRouter.get(
   "/fetch-complaints-city-state",
   protectRoute,
   filterComplaintOnStateCity
+);
+
+complaintRouter.post(
+  "/upload-after-image/:id",
+  protectRoute,
+  upload.single("imageUrl"),
+  updateAfterImageUrl
+);
+
+complaintRouter.post(
+  "/update-complaint-status-upload-image/:id",
+  protectRoute,
+  upload.single("imageUrl"),
+  updateComplaint
 );
 
 export default complaintRouter;
