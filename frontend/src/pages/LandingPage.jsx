@@ -17,7 +17,7 @@ const LandingPage = () => {
             localStorage.removeItem('token');
             localStorage.removeItem('userData');
             setIsLoggedIn(false);
-            navigate('/login');
+            navigate('/');
         } catch (err) {
             console.error("Logout failed", err);
         }
