@@ -27,8 +27,7 @@ export const createComplaint = async (req, res) => {
       !longitude ||
       !city ||
       !state ||
-      !landmark ||
-      !status
+      !landmark
     ) {
       return res.status(404).json({
         success: false,

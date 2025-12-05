@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  checkAuth,
   login,
   logout,
   signup,
@@ -13,6 +14,7 @@ const authRouter = express.Router();
 authRouter.post("/signup", signup);
 authRouter.post("/login", login);
 authRouter.post("/logout", logout);
+authRouter.get("/check-auth", protectRoute, checkAuth);
 
 // Protected Routes
 authRouter.post(
