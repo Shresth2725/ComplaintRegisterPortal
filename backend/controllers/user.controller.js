@@ -64,12 +64,12 @@ export const login = async (req, res) => {
       return res.status(404).json({ success: false, message: "No User Found" });
     }
 
-    if (isAdmin && !userData.isAdmin) {
-      return res.status(403).json({
-        success: false,
-        message: "You are not an admin",
-      });
-    }
+    // if (isAdmin && !userData.isAdmin) {
+    //   return res.status(403).json({
+    //     success: false,
+    //     message: "You are not an admin",
+    //   });
+    // }
 
     const isPasswordValid = await userData.checkPassword(password);
 
@@ -157,7 +157,6 @@ export const updateProfile = async (req, res) => {
     });
   }
 };
-
 
 // Check Auth
 export const checkAuth = (req, res) => {
