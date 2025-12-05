@@ -43,9 +43,31 @@ const complaintSchema = new mongoose.Schema(
       trim: true,
       lowercase: true,
     },
-    imageUrl: {
+    beforeImageUrl: {
       type: String,
       lowercase: true,
+    },
+    afterImageUrl: {
+      type: String,
+      lowercase: true,
+    },
+    category: {
+      type: String,
+      enum: [
+        "road_damage",
+        "garbage_issue",
+        "water_leakage",
+        "electricity_issue",
+        "tree_fallen",
+        "accident",
+        "fire",
+        "drainage_problem",
+        "noise_issue",
+        "other",
+      ],
+      default: "other",
+      lowercase: true,
+      trim: true,
     },
     status: {
       type: String,
