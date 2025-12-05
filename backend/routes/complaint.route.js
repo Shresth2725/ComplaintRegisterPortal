@@ -16,7 +16,7 @@ const complaintRouter = express.Router();
 complaintRouter.post(
   "/create-complaint",
   protectRoute,
-  upload.single("imageUrl"),
+  upload.single("beforeImageUrl"),
   createComplaint
 );
 
@@ -39,14 +39,14 @@ complaintRouter.get(
 complaintRouter.post(
   "/upload-after-image/:id",
   protectRoute,
-  upload.single("imageUrl"),
+  upload.single("afterImageUrl"),
   updateAfterImageUrl
 );
 
 complaintRouter.post(
   "/update-complaint-status-upload-image/:id",
   protectRoute,
-  upload.single("imageUrl"),
+  upload.single("afterImageUrl"),
   updateComplaint
 );
 
