@@ -14,9 +14,9 @@ const ComplaintCard = ({ complaint }) => {
           </p>
         </div>
 
-        {complaint.imageUrl && (
+        {complaint.beforeImageUrl && (
           <img
-            src={complaint.imageUrl}
+            src={complaint.beforeImageUrl}
             alt="Complaint"
             className="w-32 h-32 rounded-lg object-cover border border-white/10"
           />
