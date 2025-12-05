@@ -9,12 +9,15 @@ const NewComplaint = ({
   setMessage,
   fetchComplaints,
 }) => {
+  // Handle text input
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  // Handle image input (IMPORTANT → name must be imageUrl)
   const handleFile = (e) =>
-    setFormData({ ...formData, image: e.target.files[0] });
+    setFormData({ ...formData, imageUrl: e.target.files[0] });
 
+  // Fetch GPS
   const getLocation = () => {
     if (!navigator.geolocation)
       return setMessage({ type: "error", text: "Geolocation not supported" });
@@ -38,13 +41,17 @@ const NewComplaint = ({
 
     const data = new FormData();
     Object.entries(formData).forEach(([key, val]) => {
-      if (val) data.append(key === "image" ? "imageUrl" : key, val);
+      if (val) data.append(key, val);
     });
 
     try {
-      const res = await API.post("/complaint/create-complaint", data);
+      const res = await API.post("/complaint/create-complaint", data, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
       if (res.data.success) {
         setMessage({ type: "success", text: "Complaint submitted!" });
+
         setFormData({
           description: "",
           city: "",
@@ -52,11 +59,12 @@ const NewComplaint = ({
           landmark: "",
           latitude: "",
           longitude: "",
-          image: null,
+          imageUrl: null,
         });
+
         fetchComplaints();
       }
-    } catch {
+    } catch (err) {
       setMessage({ type: "error", text: "Submission failed" });
     } finally {
       setSubmitLoading(false);
@@ -143,6 +151,7 @@ const NewComplaint = ({
   );
 };
 
+// Reusable components
 const Input = ({ label, ...props }) => (
   <div>
     <label className="text-gray-300 mb-2 block">{label}</label>
