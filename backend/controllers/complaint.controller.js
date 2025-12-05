@@ -2,6 +2,18 @@ import { log } from "console";
 import cloudinary from "../config/cloudinary.js";
 import Complaint from "../models/complaint.model.js";
 import fs from "fs";
+import {
+  roadKeywords,
+  garbageKeywords,
+  waterKeywords,
+  electricityKeywords,
+  treeKeywords,
+  fireKeywords,
+  accidentKeywords,
+  noiseKeywords,
+  hasKeyword,
+} from "../config/constants.js";
+import { sendMail } from "../config/email.js";
 
 // Create a Complaint
 export const createComplaint = async (req, res) => {
@@ -18,48 +30,78 @@ export const createComplaint = async (req, res) => {
       !landmark ||
       !status
     ) {
-      return res
-        .status(404)
-        .json({ success: false, message: "All details are required" });
+      return res.status(404).json({
+        success: false,
+        message: "All details are required",
+      });
     }
 
-    let imageUrl;
+    let beforeImageUrl = "";
+    let detectedCategory = "other";
+
     if (req.file) {
       try {
-        const upload = await cloudinary.uploader.upload(req.file.path);
+        const upload = await cloudinary.uploader.upload(req.file.path, {
+          categorization: "google_tagging",
+          auto_tagging: 0.7,
+        });
 
-        imageUrl = upload.secure_url;
+        beforeImageUrl = upload.secure_url;
+
+        const tags =
+          upload.info?.categorization?.google_tagging?.data?.map((t) =>
+            t.tag.toLowerCase()
+          ) || [];
+
+        console.log("Detected Tags:", tags);
+
+        if (hasKeyword(tags, roadKeywords)) detectedCategory = "road_damage";
+        else if (hasKeyword(tags, garbageKeywords))
+          detectedCategory = "garbage_issue";
+        else if (hasKeyword(tags, waterKeywords))
+          detectedCategory = "water_leakage";
+        else if (hasKeyword(tags, electricityKeywords))
+          detectedCategory = "electricity_issue";
+        else if (hasKeyword(tags, treeKeywords))
+          detectedCategory = "tree_fallen";
+        else if (hasKeyword(tags, fireKeywords)) detectedCategory = "fire";
+        else if (hasKeyword(tags, accidentKeywords))
+          detectedCategory = "accident";
+        else if (hasKeyword(tags, noiseKeywords))
+          detectedCategory = "noise_issue";
 
         fs.unlinkSync(req.file.path);
       } catch (error) {
-        console.log(error.message);
+        console.log(error);
         return res.status(500).json({
           success: false,
-          message: `Error while uploading the image to cloudinary: ${error.message}`,
+          message: `Error uploading image to Cloudinary: ${error.message}`,
         });
       }
     }
 
+    // SAVE COMPLAINT
     const newComplaint = await Complaint.create({
       user: req.user._id,
       description,
-      landmark,
       latitude,
       longitude,
       city,
       state,
-      imageUrl,
-      status: "New",
+      landmark,
+      beforeImageUrl,
+      category: detectedCategory,
+      status: "new",
     });
 
     res.status(201).json({
       success: true,
-      message: `Complaint submitted successfully`,
+      message: "Complaint submitted successfully",
       complaint: newComplaint,
     });
   } catch (error) {
     console.log(error.message);
-    return res.status(404).json({
+    return res.status(500).json({
       success: false,
       message: `Error in create complaint API: ${error.message}`,
     });
@@ -282,6 +324,145 @@ export const updateComplaintStatus = async (req, res) => {
     return res.status(501).json({
       success: false,
       message: `Error in update complaint status API: ${error.message}`,
+    });
+  }
+};
+
+// Update the afterImageUrl when status is resolved - ADMIN
+export const updateAfterImageUrl = async (req, res) => {
+  try {
+    if (!req.user.isAdmin) {
+      return res
+        .status(404)
+        .json({ success: false, message: "You are not a admin" });
+    }
+
+    const complaintId = req.params.id;
+
+    if (!complaintId) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Please provide a complaintId" });
+    }
+
+    const complaint = await Complaint.findById(complaintId);
+
+    if (!complaint) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No complaint found" });
+    }
+
+    if (!req.file) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Please provide a image" });
+    }
+
+    let imageUrl;
+    if (req.file) {
+      try {
+        const upload = await cloudinary.uploader.upload(req.file.path);
+
+        imageUrl = upload.secure_url;
+
+        fs.unlinkSync(req.file.path);
+      } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({
+          success: false,
+          message: `Error while uploading the image to cloudinary: ${error.message}`,
+        });
+      }
+    }
+
+    complaint.afterImageUrl = imageUrl;
+    complaint.status = "resolved";
+
+    await complaint.save();
+
+    res.status(201).json({
+      success: true,
+      message: "After Image uploaded successfully",
+      complaint,
+    });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(501).json({
+      success: false,
+      message: `Error in update AfterImageUrl API: ${error.message}`,
+    });
+  }
+};
+
+// Update image and status - ADMIN
+export const updateComplaint = async (req, res) => {
+  try {
+    if (!req.user.isAdmin) {
+      return res
+        .status(403)
+        .json({ success: false, message: "You are not an admin" });
+    }
+
+    const complaintId = req.params.id;
+    const status = req.body.status;
+
+    const complaint = await Complaint.findById(complaintId).populate("user");
+
+    if (!complaint) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Complaint not found" });
+    }
+
+    if (
+      status &&
+      !["new", "in progress", "resolved"].includes(status.toLowerCase())
+    ) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid status value" });
+    }
+
+    if (req.file) {
+      try {
+        const upload = await cloudinary.uploader.upload(req.file.path);
+        complaint.afterImageUrl = upload.secure_url;
+
+        fs.unlinkSync(req.file.path);
+
+        complaint.status = "resolved";
+      } catch (error) {
+        return res.status(500).json({
+          success: false,
+          message: `Cloudinary upload failed: ${error.message}`,
+        });
+      }
+    }
+
+    if (status && !req.file) {
+      complaint.status = status.toLowerCase();
+    }
+
+    await complaint.save();
+
+    if (complaint.status === "resolved") {
+      await sendMail(
+        complaint.user.email,
+        "Your Complaint Has Been Resolved",
+        `Hello ${complaint.user.fullName}, your complaint "${complaint.description}" has been resolved.`
+      );
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Complaint updated successfully",
+      complaint,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: `Error updating complaint: ${error.message}`,
     });
   }
 };
