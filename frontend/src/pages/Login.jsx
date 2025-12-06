@@ -32,7 +32,7 @@ const Login = () => {
                 localStorage.setItem('token', res.data.user);
                 localStorage.setItem('userData', JSON.stringify(res.data.user));
                 // Redirect to dashboard or home
-                navigate(formData.isAdmin ? '/admin' : '/dashboard');
+                navigate(formData.isAdmin ? '/admin-dashboard' : '/dashboard');
             }
         } catch (err) {
             setError(err.response?.data?.message || 'Something went wrong');

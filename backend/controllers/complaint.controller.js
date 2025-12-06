@@ -151,15 +151,15 @@ export const getAllComplaints = async (req, res) => {
     }
 
     const newComplaint = complaints.filter(
-      (complaint) => complaint.status === "New"
+      (complaint) => complaint.status === "new"
     );
 
     const inProgressComplaint = complaints.filter(
-      (complaint) => complaint.status === "In Progress"
+      (complaint) => complaint.status === "in progress"
     );
 
     const resolvedComplaint = complaints.filter(
-      (complaint) => complaint.status === "Resolved"
+      (complaint) => complaint.status === "resolved"
     );
 
     res.status(201).json({
@@ -295,10 +295,25 @@ export const updateComplaintStatus = async (req, res) => {
     const complaintId = req.params.id;
     const { status } = req.body;
 
-    if (!["New", "In Progress", "Resolved"].includes(status)) {
+    if (!["new", "in progress", "resolved"].includes(status)) {
       return res
         .status(404)
         .json({ success: false, message: "Invalid  status value" });
+    }
+
+    const complaint = await Complaint.findById(complaintId);
+
+    if (!complaint) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Complaint not found" });
+    }
+
+    if (status === "resolved" && !complaint.afterImageUrl) {
+      return res.status(400).json({
+        success: false,
+        message: "Cannot resolve complaint without an after image",
+      });
     }
 
     const updateComplaint = await Complaint.findByIdAndUpdate(
@@ -306,12 +321,6 @@ export const updateComplaintStatus = async (req, res) => {
       { status },
       { new: true }
     );
-
-    if (!updateComplaint) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Complaint not found" });
-    }
 
     res.status(201).json({
       success: true,
