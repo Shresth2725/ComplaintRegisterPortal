@@ -407,53 +407,68 @@ export const updateAfterImageUrl = async (req, res) => {
 export const updateComplaint = async (req, res) => {
   try {
     if (!req.user.isAdmin) {
-      return res
-        .status(403)
-        .json({ success: false, message: "You are not an admin" });
+      return res.status(403).json({
+        success: false,
+        message: "You are not an admin",
+      });
     }
 
     const complaintId = req.params.id;
-    const status = req.body.status;
+    const { status } = req.body;
 
     const complaint = await Complaint.findById(complaintId).populate("user");
 
     if (!complaint) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Complaint not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Complaint not found",
+      });
     }
 
+    // Validate status (if provided)
     if (
       status &&
       !["new", "in progress", "resolved"].includes(status.toLowerCase())
     ) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid status value" });
+      return res.status(400).json({
+        success: false,
+        message: "Invalid status value",
+      });
     }
 
+    // ---------------------------
+    // 1. HANDLE IMAGE UPLOAD
+    // ---------------------------
     if (req.file) {
       try {
-        const upload = await cloudinary.uploader.upload(req.file.path);
-        complaint.afterImageUrl = upload.secure_url;
+        const uploaded = await cloudinary.uploader.upload(req.file.path);
+        complaint.afterImageUrl = uploaded.secure_url;
 
+        // Cleanup temp file
         fs.unlinkSync(req.file.path);
 
+        // Auto-resolve if image uploaded
         complaint.status = "resolved";
       } catch (error) {
         return res.status(500).json({
           success: false,
-          message: `Cloudinary upload failed: ${error.message}`,
+          message: "Cloudinary upload failed: " + error.message,
         });
       }
     }
 
-    if (status && !req.file) {
+    // ---------------------------
+    // 2. HANDLE STATUS UPDATE
+    // (only when NO file is uploaded)
+    // ---------------------------
+    if (!req.file && status) {
       complaint.status = status.toLowerCase();
     }
 
+    // Save updates
     await complaint.save();
 
+    // Send email after resolved
     if (complaint.status === "resolved") {
       await sendMail(
         complaint.user.email,
@@ -470,7 +485,7 @@ export const updateComplaint = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: `Error updating complaint: ${error.message}`,
+      message: "Error updating complaint: " + error.message,
     });
   }
 };
@@ -488,13 +503,11 @@ export const getComplaint = async (req, res) => {
         .json({ success: false, message: "No complaint found" });
     }
 
-    res
-      .status(201)
-      .json({
-        success: true,
-        message: "Complaint data fetched successfully",
-        complaint,
-      });
+    res.status(201).json({
+      success: true,
+      message: "Complaint data fetched successfully",
+      complaint,
+    });
   } catch (error) {
     console.log(error.message);
     return res.status(501).json({
