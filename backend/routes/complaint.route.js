@@ -3,6 +3,7 @@ import {
   createComplaint,
   filterComplaintOnStateCity,
   getAllComplaints,
+  getComplaint,
   getMyComplaint,
   updateAfterImageUrl,
   updateComplaint,
@@ -49,5 +50,7 @@ complaintRouter.post(
   upload.single("imageUrl"),
   updateComplaint
 );
+
+complaintRouter.get("/get-complaint-data/:id", protectRoute, getComplaint);
 
 export default complaintRouter;

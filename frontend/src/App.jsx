@@ -1,11 +1,17 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Signup from './pages/Signup';
-import Login from './pages/Login';
-import LandingPage from './pages/LandingPage';
-import Dashboard from './pages/Dashboard';
-import AdminDashboard from './pages/AdminDashboard';
-import ProtectedRoute from './components/ProtectedRoute';
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
+import LandingPage from "./pages/LandingPage";
+import Dashboard from "./pages/Dashboard";
+import AdminDashboard from "./pages/AdminDashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
+import "./App.css";
+import ComplaintOverviewPage from "./pages/ComplaintOverviewPage";
 
 function App() {
   return (
@@ -27,6 +33,14 @@ function App() {
           element={
             <ProtectedRoute>
               <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/complaint-overview/:id"
+          element={
+            <ProtectedRoute>
+              <ComplaintOverviewPage />
             </ProtectedRoute>
           }
         />
