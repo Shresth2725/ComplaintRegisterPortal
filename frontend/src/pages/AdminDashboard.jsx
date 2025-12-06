@@ -53,7 +53,7 @@ const AdminDashboard = () => {
   };
 
   // ---------------------------------------------------
-  // UNIFIED UPDATE FUNCTION
+  // UNIFIED UPDATE FUNCTION (status + image)
   // ---------------------------------------------------
   const updateComplaint = async (id, status, file) => {
     const formData = new FormData();
@@ -73,7 +73,7 @@ const AdminDashboard = () => {
         setMessage({ type: "success", text: "Complaint updated!" });
         await fetchComplaints();
       }
-    } catch (err) {
+    } catch {
       setMessage({ type: "error", text: "Update failed" });
     }
 
@@ -145,7 +145,7 @@ const AdminDashboard = () => {
 };
 
 // =======================================================================
-// OVERVIEW COMPONENT
+// OVERVIEW COMPONENT — includes Pie & Category Bar Charts
 // =======================================================================
 const AdminOverview = ({ complaints }) => {
   const total =
@@ -153,7 +153,7 @@ const AdminOverview = ({ complaints }) => {
     complaints.inProgressComplaint.length +
     complaints.resolvedComplaint.length;
 
-  const data = [
+  const pieData = [
     { name: "New", value: complaints.newComplaint.length, color: "#EF4444" },
     {
       name: "In Progress",
@@ -165,6 +165,36 @@ const AdminOverview = ({ complaints }) => {
       value: complaints.resolvedComplaint.length,
       color: "#22C55E",
     },
+  ];
+
+  // CATEGORY ANALYTICS
+  const all = [
+    ...complaints.newComplaint,
+    ...complaints.inProgressComplaint,
+    ...complaints.resolvedComplaint,
+  ];
+
+  const categoryData = Object.values(
+    all.reduce((acc, c) => {
+      const category = c.category || "other";
+      if (!acc[category]) acc[category] = { name: category, count: 0 };
+      acc[category].count++;
+      return acc;
+    }, {})
+  ).map((item) => ({
+    ...item,
+    displayName: item.name.replace(/_/g, " ").toUpperCase(),
+  }));
+
+  const colors = [
+    "#8B5CF6",
+    "#EC4899",
+    "#10B981",
+    "#F59E0B",
+    "#3B82F6",
+    "#6366F1",
+    "#EF4444",
+    "#14B8A6",
   ];
 
   return (
@@ -199,18 +229,45 @@ const AdminOverview = ({ complaints }) => {
           <ResponsiveContainer>
             <PieChart>
               <Pie
-                data={data}
+                data={pieData}
                 innerRadius={60}
                 outerRadius={100}
                 dataKey="value"
               >
-                {data.map((entry, idx) => (
+                {pieData.map((entry, idx) => (
                   <Cell key={idx} fill={entry.color} />
                 ))}
               </Pie>
               <Tooltip />
               <Legend />
             </PieChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* CATEGORY BAR CHART */}
+      <div className="bg-white/10 p-6 rounded-xl mb-6">
+        <h2 className="text-xl text-white mb-4">Complaints by Category</h2>
+
+        <div className="h-80 w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={categoryData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+              <XAxis
+                dataKey="displayName"
+                stroke="#9CA3AF"
+                tick={{ fill: "#9CA3AF" }}
+              />
+              <YAxis stroke="#9CA3AF" tick={{ fill: "#9CA3AF" }} />
+              <Tooltip />
+              <Legend />
+
+              <Bar dataKey="count" name="Complaints" radius={[5, 5, 0, 0]}>
+                {categoryData.map((_, idx) => (
+                  <Cell key={idx} fill={colors[idx % colors.length]} />
+                ))}
+              </Bar>
+            </BarChart>
           </ResponsiveContainer>
         </div>
       </div>
