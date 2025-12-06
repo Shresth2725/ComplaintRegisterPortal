@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api/axios";
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 
 const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState("overview");
@@ -176,11 +177,19 @@ const AdminDashboard = () => {
     );
 };
 
+
+
 const AdminOverview = ({ complaints, loading }) => {
     const total =
         complaints.newComplaint.length +
         complaints.inProgressComplaint.length +
         complaints.resolvedComplaint.length;
+
+    const data = [
+        { name: 'New', value: complaints.newComplaint.length, color: '#EF4444' }, // Red-500
+        { name: 'In Progress', value: complaints.inProgressComplaint.length, color: '#EAB308' }, // Yellow-500
+        { name: 'Resolved', value: complaints.resolvedComplaint.length, color: '#22C55E' }, // Green-500
+    ];
 
     return (
         <>
@@ -199,6 +208,88 @@ const AdminOverview = ({ complaints, loading }) => {
                 <StatCard title="In Progress" value={complaints.inProgressComplaint.length} color="yellow" />
                 <StatCard title="Resolved" value={complaints.resolvedComplaint.length} color="green" />
             </div>
+
+            {/* Pie Chart Section */}
+            <div className="bg-gradient-to-br from-white/10 to-white/5 border border-white/20 p-6 rounded-2xl shadow-lg backdrop-blur-md mb-6">
+                <h2 className="text-xl font-bold text-white mb-4">Complaints Distribution</h2>
+                <div className="h-80 w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                            <Pie
+                                data={data}
+                                cx="50%"
+                                cy="50%"
+                                innerRadius={60}
+                                outerRadius={100}
+                                paddingAngle={5}
+                                dataKey="value"
+                            >
+                                {data.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
+                                ))}
+                            </Pie>
+                            <Tooltip
+                                contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155', color: '#fff' }}
+                                itemStyle={{ color: '#fff' }}
+                            />
+                            <Legend verticalAlign="bottom" height={36} iconType="circle" />
+                        </PieChart>
+                    </ResponsiveContainer>
+                </div>
+            </div>
+
+            {/* Category Bar Chart Section */}
+            <div className="bg-gradient-to-br from-white/10 to-white/5 border border-white/20 p-6 rounded-2xl shadow-lg backdrop-blur-md mb-6">
+                <h2 className="text-xl font-bold text-white mb-4">Complaints by Category</h2>
+                <div className="h-80 w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                        <BarChart
+                            data={[
+                                ...complaints.newComplaint,
+                                ...complaints.inProgressComplaint,
+                                ...complaints.resolvedComplaint
+                            ].reduce((acc, curr) => {
+                                const category = curr.category || "other";
+                                const existing = acc.find(item => item.name === category);
+                                if (existing) {
+                                    existing.value += 1;
+                                } else {
+                                    acc.push({ name: category, value: 1 });
+                                }
+                                return acc;
+                            }, []).map(item => ({
+                                ...item,
+                                displayName: item.name.replace(/_/g, ' ').toUpperCase()
+                            }))}
+                            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                        >
+                            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                            <XAxis dataKey="displayName" stroke="#9CA3AF" tick={{ fill: '#9CA3AF', fontSize: 12 }} />
+                            <YAxis stroke="#9CA3AF" tick={{ fill: '#9CA3AF' }} />
+                            <Tooltip
+                                contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155', color: '#fff' }}
+                                cursor={{ fill: 'rgba(255, 255, 255, 0.1)' }}
+                            />
+                            <Legend />
+                            <Bar dataKey="value" name="Complaints" radius={[4, 4, 0, 0]}>
+                                {[
+                                    ...complaints.newComplaint,
+                                    ...complaints.inProgressComplaint,
+                                    ...complaints.resolvedComplaint
+                                ].reduce((acc, curr) => {
+                                    const category = curr.category || "other";
+                                    if (!acc.find(item => item.name === category)) {
+                                        acc.push({ name: category });
+                                    }
+                                    return acc;
+                                }, []).map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={['#8B5CF6', '#EC4899', '#10B981', '#F59E0B', '#3B82F6', '#6366F1', '#EF4444', '#14B8A6'][index % 8]} />
+                                ))}
+                            </Bar>
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+            </div>
         </>
     );
 };
@@ -211,20 +302,51 @@ const StatCard = ({ title, value, color }) => (
 );
 
 const AllComplaints = ({ complaints, loading, updatingId, uploadingId, onStatusChange, onImageUpload }) => {
-    const all = [
-        ...complaints.newComplaint,
-        ...complaints.inProgressComplaint,
-        ...complaints.resolvedComplaint
-    ];
+    const [filter, setFilter] = useState("all");
+
+    const getFilteredComplaints = () => {
+        switch (filter) {
+            case "new":
+                return complaints.newComplaint;
+            case "in progress":
+                return complaints.inProgressComplaint;
+            case "resolved":
+                return complaints.resolvedComplaint;
+            default:
+                return [
+                    ...complaints.newComplaint,
+                    ...complaints.inProgressComplaint,
+                    ...complaints.resolvedComplaint
+                ];
+        }
+    };
+
+    const displayedComplaints = getFilteredComplaints();
 
     if (loading) return <div className="text-white text-center mt-10">Loading complaints...</div>;
 
     return (
         <div className="space-y-6">
-            <h2 className="text-xl font-bold text-white mb-4">All Complaints</h2>
-            {all.length === 0 && <p className="text-gray-400">No complaints found.</p>}
+            <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-bold text-white">All Complaints</h2>
+                <div className="flex items-center gap-2">
+                    <label className="text-gray-400 text-sm">Filter by Status:</label>
+                    <select
+                        value={filter}
+                        onChange={(e) => setFilter(e.target.value)}
+                        className="bg-slate-800 text-white border border-white/20 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500"
+                    >
+                        <option value="all">All</option>
+                        <option value="new">New</option>
+                        <option value="in progress">In Progress</option>
+                        <option value="resolved">Resolved</option>
+                    </select>
+                </div>
+            </div>
 
-            {all.map((complaint) => (
+            {displayedComplaints.length === 0 && <p className="text-gray-400">No complaints found for this filter.</p>}
+
+            {displayedComplaints.map((complaint) => (
                 <div key={complaint._id} className="bg-white/5 border border-white/10 rounded-xl p-6 hover:bg-white/10 transition-colors relative">
                     {/* Loading Overlay for this specific card */}
                     {(updatingId === complaint._id || uploadingId === complaint._id) && (
@@ -236,14 +358,17 @@ const AllComplaints = ({ complaints, loading, updatingId, uploadingId, onStatusC
                     )}
 
                     <div className="flex flex-col md:flex-row gap-6">
-                        <div className="w-full md:w-1/4">
-                            <img
-                                src={complaint.beforeImageUrl || "https://via.placeholder.com/150"}
-                                alt="Complaint"
-                                className="w-full h-48 object-cover rounded-lg"
-                            />
+                        <div className="w-full md:w-1/4 space-y-4">
+                            <div>
+                                <p className="text-xs text-gray-400 mb-1">Before Image:</p>
+                                <img
+                                    src={complaint.beforeImageUrl || "https://via.placeholder.com/150"}
+                                    alt="Complaint"
+                                    className="w-full h-48 object-cover rounded-lg border border-white/10"
+                                />
+                            </div>
                             {complaint.afterImageUrl && (
-                                <div className="mt-2">
+                                <div>
                                     <p className="text-xs text-green-400 mb-1">Resolved Image:</p>
                                     <img
                                         src={complaint.afterImageUrl}
