@@ -12,6 +12,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
 import ComplaintOverviewPage from "./pages/ComplaintOverviewPage";
+import OtpVerify from "./pages/OtpVerify";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/otp-verify" element={<OtpVerify />} />
       </Routes>
     </Router>
   );

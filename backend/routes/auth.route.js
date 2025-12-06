@@ -1,22 +1,32 @@
 import express from "express";
 import {
-  checkAuth,
+  sendOtp,
+  verifyOtp,
+  createAccount,
   login,
   logout,
-  signup,
   updateProfile,
+  checkAuth,
 } from "../controllers/user.controller.js";
+
 import { protectRoute } from "../middleware/auth.middleware.js";
 import { upload } from "../middleware/uploads.js";
 
 const authRouter = express.Router();
 
-authRouter.post("/signup", signup);
+// OTP BASED SIGNUP
+authRouter.post("/send-otp", sendOtp);
+authRouter.post("/verify-otp", verifyOtp);
+authRouter.post("/create-account", createAccount);
+
+// LOGIN / LOGOUT
 authRouter.post("/login", login);
 authRouter.post("/logout", logout);
+
+// CHECK AUTH
 authRouter.get("/check-auth", protectRoute, checkAuth);
 
-// Protected Routes
+// UPDATE PROFILE
 authRouter.post(
   "/update",
   protectRoute,
