@@ -2,7 +2,7 @@ const ComplaintCard = ({ complaint }) => {
   return (
     <div
       className="
-        bg-gradient-to-br from-white/10 to-white/5 
+        bg-linear-to-br from-white/10 to-white/5 
         border border-white/20 
         rounded-xl p-6 shadow-lg backdrop-blur-md
         hover:shadow-xl hover:scale-[1.01] transition-all duration-300

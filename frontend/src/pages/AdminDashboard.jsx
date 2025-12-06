@@ -102,7 +102,7 @@ const AdminDashboard = () => {
       </aside>
 
       {/* MAIN CONTENT */}
-      <main className="flex-1 p-6 md:p-10 bg-gradient-to-br from-slate-900 to-purple-900/10 overflow-y-auto">
+      <main className="flex-1 p-6 md:p-10 bg-linear-to-br from-slate-900 to-purple-900/10 overflow-y-auto">
         {/* Toast Message */}
         {message.text && (
           <div

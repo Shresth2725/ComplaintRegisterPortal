@@ -10,7 +10,7 @@ const Overview = ({ complaints, loading, setActiveTab }) => {
       {/* Title Section */}
       <div
         className="
-          bg-gradient-to-br from-white/10 to-white/5 
+          bg-linear-to-br from-white/10 to-white/5 
           border border-white/20 
           p-6 rounded-2xl shadow-lg 
           backdrop-blur-md mb-6
@@ -46,7 +46,7 @@ const Overview = ({ complaints, loading, setActiveTab }) => {
 const StatCard = ({ title, value, color }) => (
   <div
     className="
-      bg-gradient-to-br from-white/10 to-white/5 
+      bg-linear-to-br from-white/10 to-white/5 
       border border-white/20 
       p-6 rounded-2xl shadow-lg 
       backdrop-blur-md 
