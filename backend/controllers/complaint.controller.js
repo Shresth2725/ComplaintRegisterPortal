@@ -507,6 +507,7 @@ export const getComplaint = async (req, res) => {
       success: true,
       message: "Complaint data fetched successfully",
       complaint,
+      isAdmin: req.user.isAdmin,
     });
   } catch (error) {
     console.log(error.message);

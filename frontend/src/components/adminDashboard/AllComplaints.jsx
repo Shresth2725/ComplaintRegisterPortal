@@ -1,5 +1,6 @@
 import { useState } from "react";
 import AdminComplaintCard from "./AdminComplaintCard";
+import { Link } from "react-router-dom";
 
 const AllComplaints = ({
   complaints,
@@ -42,12 +43,14 @@ const AllComplaints = ({
 
       {/* LIST */}
       {list.map((complaint) => (
-        <AdminComplaintCard
-          key={complaint._id}
-          complaint={complaint}
-          updatingId={updatingId}
-          updateComplaint={updateComplaint}
-        />
+        <Link to={`/complaint-overview/${complaint._id}`} key={complaint.id}>
+          <AdminComplaintCard
+            key={complaint._id}
+            complaint={complaint}
+            updatingId={updatingId}
+            updateComplaint={updateComplaint}
+          />
+        </Link>
       ))}
     </div>
   );

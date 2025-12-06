@@ -7,11 +7,13 @@ const ComplaintOverviewPage = () => {
   const { id } = useParams();
   const [complaint, setComplaint] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState();
 
   const fetchComplaint = async () => {
     try {
       const res = await API.get(`/complaint/get-complaint-data/${id}`);
       setComplaint(res.data.complaint);
+      setIsAdmin(res.data.isAdmin);
     } catch (error) {
       console.error("Error fetching complaint:", error);
     } finally {
@@ -146,7 +148,7 @@ const ComplaintOverviewPage = () => {
         </div>
 
         {/* User Info */}
-        {complaint.user && (
+        {!isAdmin && complaint.user && (
           <div className="mt-6">
             <h2 className="text-xl font-semibold mb-2">Submitted By</h2>
             <p className="text-gray-300">{complaint.user.fullName}</p>
@@ -157,7 +159,9 @@ const ComplaintOverviewPage = () => {
         {/* CHAT BUTTON AT THE BOTTOM */}
         <div className="mt-8 text-center">
           <button className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg text-white text-lg">
-            Chat with Admin
+            {isAdmin
+              ? `Chat with ${complaint.user.fullName}`
+              : "Chat with Admin"}
           </button>
         </div>
       </div>
