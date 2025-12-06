@@ -474,3 +474,32 @@ export const updateComplaint = async (req, res) => {
     });
   }
 };
+
+// Get Complaint Details
+export const getComplaint = async (req, res) => {
+  try {
+    const complaintId = req.params.id;
+
+    const complaint = await Complaint.findById(complaintId).populate("user");
+
+    if (!complaint) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No complaint found" });
+    }
+
+    res
+      .status(201)
+      .json({
+        success: true,
+        message: "Complaint data fetched successfully",
+        complaint,
+      });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(501).json({
+      success: false,
+      message: `Error in get complaiant data API: ${error.message}`,
+    });
+  }
+};

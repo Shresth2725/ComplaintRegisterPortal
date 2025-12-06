@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import ComplaintCard from "./ComplaintCard";
 
 const MyComplaints = ({ complaints, loading, setActiveTab }) => {
@@ -21,7 +22,9 @@ const MyComplaints = ({ complaints, loading, setActiveTab }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {complaints.map((c) => (
-        <ComplaintCard key={c._id} complaint={c} />
+        <Link to={`/complaint-overview/${c._id}`} key={c.id}>
+          <ComplaintCard key={c._id} complaint={c} />{" "}
+        </Link>
       ))}
     </div>
   );
