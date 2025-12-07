@@ -12,6 +12,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
 import ComplaintOverviewPage from "./pages/ComplaintOverviewPage";
+import AdminComplaintOverviewPage from "./pages/AdminComplaintOverviewPage";
 import OtpVerify from "./pages/OtpVerify";
 
 function App() {
@@ -42,6 +43,14 @@ function App() {
           element={
             <ProtectedRoute>
               <ComplaintOverviewPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/complaint-overview/:id"
+          element={
+            <ProtectedRoute>
+              <AdminComplaintOverviewPage />
             </ProtectedRoute>
           }
         />

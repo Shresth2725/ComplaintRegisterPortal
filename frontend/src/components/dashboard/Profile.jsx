@@ -50,15 +50,14 @@ const Profile = ({
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h1 className="text-white text-2xl font-bold mb-6">Edit Profile</h1>
+      <h1 className="text-slate-900 text-2xl font-bold mb-6">Edit Profile</h1>
 
       {message.text && (
         <div
-          className={`p-4 mb-6 rounded-lg ${
-            message.type === "success"
-              ? "bg-green-500/20 text-green-300"
-              : "bg-red-500/20 text-red-300"
-          }`}
+          className={`p-4 mb-6 rounded-lg border ${message.type === "success"
+              ? "bg-green-50 border-green-200 text-green-700"
+              : "bg-red-50 border-red-200 text-red-700"
+            }`}
         >
           {message.text}
         </div>
@@ -66,21 +65,22 @@ const Profile = ({
 
       <form
         onSubmit={updateProfile}
-        className="bg-white/5 p-8 rounded-2xl border border-white/10 space-y-6"
+        className="bg-white p-8 rounded-xl border border-slate-200 shadow-sm space-y-6"
       >
         <div className="flex flex-col items-center">
-          <div className="w-24 h-24 rounded-full overflow-hidden bg-purple-500/20 border-2 border-purple-400/40 flex items-center justify-center text-purple-300 text-3xl">
+          <div className="w-24 h-24 rounded-full overflow-hidden bg-blue-100 border-4 border-white shadow-md flex items-center justify-center text-blue-700 text-3xl font-bold">
             {profileData.previewUrl ? (
               <img
                 src={profileData.previewUrl}
                 className="w-full h-full object-cover"
+                alt="Profile"
               />
             ) : (
-              user?.fullName?.charAt(0)
+              user?.fullName?.charAt(0).toUpperCase()
             )}
           </div>
 
-          <label className="cursor-pointer mt-3 bg-white/10 px-4 py-2 text-white rounded-lg hover:bg-white/20">
+          <label className="cursor-pointer mt-4 bg-white border border-slate-300 px-4 py-2 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors text-sm font-medium shadow-sm">
             Change Photo
             <input type="file" className="hidden" onChange={handleFile} />
           </label>
@@ -91,6 +91,7 @@ const Profile = ({
           name="fullName"
           value={profileData.fullName}
           onChange={handleChange}
+          placeholder="Enter full name"
         />
 
         <TextArea
@@ -98,11 +99,12 @@ const Profile = ({
           name="address"
           value={profileData.address}
           onChange={handleChange}
+          placeholder="Enter address"
         />
 
         <button
           disabled={submitLoading}
-          className="w-full py-3 bg-purple-600 text-white rounded-lg"
+          className="w-full py-3 bg-blue-700 hover:bg-blue-800 text-white font-semibold rounded-lg transition-colors shadow-sm disabled:opacity-50"
         >
           {submitLoading ? "Updating..." : "Update Profile"}
         </button>
@@ -113,21 +115,21 @@ const Profile = ({
 
 const Input = ({ label, ...props }) => (
   <div>
-    <label className="block text-gray-300 mb-2">{label}</label>
+    <label className="block text-slate-700 mb-2 font-medium text-sm">{label}</label>
     <input
       {...props}
-      className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg text-white"
+      className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
     />
   </div>
 );
 
 const TextArea = ({ label, ...props }) => (
   <div>
-    <label className="block text-gray-300 mb-2">{label}</label>
+    <label className="block text-slate-700 mb-2 font-medium text-sm">{label}</label>
     <textarea
       {...props}
       rows="3"
-      className="w-full px-4 py-3 bg-black/20 border border-white/10 rounded-lg text-white"
+      className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
     />
   </div>
 );

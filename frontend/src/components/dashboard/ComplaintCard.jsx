@@ -1,18 +1,11 @@
 const ComplaintCard = ({ complaint }) => {
   return (
-    <div
-      className="
-        bg-linear-to-br from-white/10 to-white/5 
-        border border-white/20 
-        rounded-xl p-6 shadow-lg backdrop-blur-md
-        hover:shadow-xl hover:scale-[1.01] transition-all duration-300
-      "
-    >
+    <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
       {/* Top Section */}
       <div className="flex justify-between items-start">
         <div className="w-full">
           <div className="flex justify-between items-center">
-            <span className="text-gray-300 text-sm">
+            <span className="text-slate-500 text-sm font-medium">
               {new Date(complaint.createdAt).toLocaleDateString()}
             </span>
 
@@ -20,12 +13,11 @@ const ComplaintCard = ({ complaint }) => {
             <span
               className={`
                 px-3 py-1 rounded-full text-xs font-semibold
-                ${
-                  complaint.status === "resolved"
-                    ? "bg-green-500/20 text-green-300"
-                    : complaint.status === "in progress"
-                    ? "bg-yellow-500/20 text-yellow-300"
-                    : "bg-red-500/20 text-red-300"
+                ${complaint.status === "resolved"
+                  ? "bg-green-100 text-green-700"
+                  : complaint.status === "in progress"
+                    ? "bg-amber-100 text-amber-700"
+                    : "bg-red-100 text-red-700"
                 }
               `}
             >
@@ -34,12 +26,12 @@ const ComplaintCard = ({ complaint }) => {
           </div>
 
           {/* Description */}
-          <h3 className="text-white text-lg mt-2 font-semibold">
+          <h3 className="text-slate-900 text-lg mt-2 font-semibold line-clamp-2">
             {complaint.description}
           </h3>
 
           {/* Location */}
-          <p className="text-gray-400 text-sm mt-1">
+          <p className="text-slate-500 text-sm mt-1 flex items-center gap-1">
             📍 {complaint.landmark}, {complaint.city}
           </p>
         </div>
@@ -51,11 +43,11 @@ const ComplaintCard = ({ complaint }) => {
           {/* Before Image */}
           {complaint.beforeImageUrl && (
             <div className="w-36">
-              <p className="text-gray-300 text-xs mb-1">Before</p>
+              <p className="text-slate-500 text-xs mb-1 font-medium">Before</p>
               <img
                 src={complaint.beforeImageUrl}
                 alt="Before"
-                className="w-36 h-32 rounded-lg object-cover border border-white/10 shadow"
+                className="w-36 h-32 rounded-lg object-cover border border-slate-200"
               />
             </div>
           )}
@@ -63,11 +55,11 @@ const ComplaintCard = ({ complaint }) => {
           {/* After Image */}
           {complaint.afterImageUrl && (
             <div className="w-36">
-              <p className="text-gray-300 text-xs mb-1">After</p>
+              <p className="text-slate-500 text-xs mb-1 font-medium">After</p>
               <img
                 src={complaint.afterImageUrl}
                 alt="After"
-                className="w-36 h-32 rounded-lg object-cover border border-white/10 shadow"
+                className="w-36 h-32 rounded-lg object-cover border border-slate-200"
               />
             </div>
           )}

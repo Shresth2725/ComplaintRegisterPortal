@@ -70,20 +70,23 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 font-sans">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">Welcome Back</h1>
-          <p className="text-gray-400">Login to your account</p>
+          <Link to="/" className="text-2xl font-bold text-slate-900 tracking-tight mb-2 inline-block">
+            ComplaintPortal
+          </Link>
+          <h1 className="text-3xl font-bold text-slate-800 mb-2">Welcome Back</h1>
+          <p className="text-slate-600">Login to your account to continue</p>
         </div>
 
         {/* Card */}
-        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 shadow-2xl border border-white/20">
+        <div className="bg-white rounded-xl p-8 shadow-sm border border-slate-200">
           {/* Error Message */}
           {error && (
-            <div className="mb-6 p-4 bg-red-500/20 border border-red-500/50 rounded-lg">
-              <p className="text-red-200 text-sm font-medium">{error}</p>
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-700 text-sm font-medium">{error}</p>
             </div>
           )}
 
@@ -92,7 +95,7 @@ const Login = () => {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-gray-200 mb-2"
+                className="block text-sm font-medium text-slate-700 mb-2"
               >
                 Email Address
               </label>
@@ -104,7 +107,7 @@ const Login = () => {
                 onChange={handleChange}
                 required
                 placeholder="john@example.com"
-                className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all hover:bg-white/10"
+                className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               />
             </div>
 
@@ -112,7 +115,7 @@ const Login = () => {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-200 mb-2"
+                className="block text-sm font-medium text-slate-700 mb-2"
               >
                 Password
               </label>
@@ -124,7 +127,7 @@ const Login = () => {
                 onChange={handleChange}
                 required
                 placeholder="••••••••"
-                className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all hover:bg-white/10"
+                className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               />
             </div>
 
@@ -136,11 +139,11 @@ const Login = () => {
                 name="isAdmin"
                 checked={formData.isAdmin}
                 onChange={handleChange}
-                className="w-4 h-4 bg-white/5 border border-white/20 rounded text-purple-600 focus:ring-2 focus:ring-purple-500 cursor-pointer"
+                className="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500 cursor-pointer"
               />
               <label
                 htmlFor="isAdmin"
-                className="ml-3 text-sm font-medium text-gray-200 cursor-pointer"
+                className="ml-3 text-sm font-medium text-slate-700 cursor-pointer"
               >
                 Login as Admin
               </label>
@@ -150,7 +153,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-6 py-3 px-4 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold rounded-lg transition-all transform hover:scale-105 disabled:opacity-50 shadow-lg"
+              className="w-full mt-6 py-3 px-4 bg-blue-700 hover:bg-blue-800 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 shadow-sm"
             >
               {loading ? (
                 <span className="flex items-center justify-center">
@@ -164,29 +167,39 @@ const Login = () => {
           </form>
 
           {/* Google Login */}
-          <div className="mt-6 flex justify-center">
-            <GoogleLogin
-              onSuccess={handleGoogleSuccess}
-              onError={() => setError("Google Login failed")}
-            />
+          <div className="mt-6">
+            <div className="relative mb-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-slate-200"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white text-slate-500">Or continue with</span>
+              </div>
+            </div>
+            <div className="flex justify-center">
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={() => setError("Google Login failed")}
+              />
+            </div>
           </div>
 
           {/* Signup Link */}
-          <p className="mt-6 text-center text-gray-400 text-sm">
+          <p className="mt-6 text-center text-slate-600 text-sm">
             Don't have an account?{" "}
             <Link
               to="/signup"
-              className="text-purple-400 hover:text-purple-300 font-semibold"
+              className="text-blue-700 hover:text-blue-800 font-semibold hover:underline"
             >
               Sign Up
             </Link>
           </p>
 
           {/* Forgot Password */}
-          <p className="mt-3 text-center text-gray-400 text-sm">
+          <p className="mt-3 text-center text-sm">
             <button
               type="button"
-              className="text-purple-400 hover:text-purple-300 font-semibold"
+              className="text-blue-700 hover:text-blue-800 font-semibold hover:underline"
             >
               Forgot Password?
             </button>
@@ -194,7 +207,7 @@ const Login = () => {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-gray-500 text-xs mt-8">
+        <p className="text-center text-slate-500 text-xs mt-8">
           © 2025 Complaint Register Portal. All rights reserved.
         </p>
       </div>

@@ -1,31 +1,28 @@
-const AdminComplaintCard = ({ complaint, updatingId, updateComplaint }) => {
+const AdminComplaintCard = ({ complaint }) => {
   const c = complaint;
 
   return (
-    <div className="bg-white/5 p-6 rounded-xl relative">
-      {updatingId === c._id && (
-        <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white">
-          Updating...
-        </div>
-      )}
+    <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow relative">
 
       <div className="flex flex-col md:flex-row gap-6">
         {/* IMAGES */}
         <div className="md:w-1/4 space-y-4">
           <div>
-            <p className="text-xs text-gray-400 mb-1">Before Image:</p>
+            <p className="text-xs text-slate-500 mb-1 font-medium">Before Image:</p>
             <img
               src={c.beforeImageUrl}
-              className="w-full h-48 object-cover rounded-lg"
+              className="w-full h-48 object-cover rounded-lg border border-slate-200"
+              alt="Before"
             />
           </div>
 
           {c.afterImageUrl && (
             <div>
-              <p className="text-xs text-green-400 mb-1">After Image:</p>
+              <p className="text-xs text-green-600 mb-1 font-medium">After Image:</p>
               <img
                 src={c.afterImageUrl}
-                className="w-full h-48 object-cover rounded-lg border-2 border-green-500/40"
+                className="w-full h-48 object-cover rounded-lg border-2 border-green-200"
+                alt="After"
               />
             </div>
           )}
@@ -33,69 +30,41 @@ const AdminComplaintCard = ({ complaint, updatingId, updateComplaint }) => {
 
         {/* DETAILS */}
         <div className="flex-1">
-          <h3 className="text-xl text-white font-semibold">
-            {c.category?.replace("_", " ").toUpperCase()}
-          </h3>
-
-          <p className="text-gray-400 mt-1">
-            {new Date(c.createdAt).toLocaleDateString()}
-          </p>
-
-          <p className="text-gray-300 mt-3">{c.description}</p>
-
-          <div className="flex gap-4 my-3 text-gray-400">
-            <p>
-              📍 {c.city}, {c.state}
-            </p>
-            <p>🏢 {c.landmark}</p>
+          <div className="flex justify-between items-start">
+            <h3 className="text-xl text-slate-900 font-bold">
+              {c.category?.replace("_", " ").toUpperCase()}
+            </h3>
+            <span className="text-sm text-slate-500">
+              {new Date(c.createdAt).toLocaleDateString()}
+            </span>
           </div>
 
-          {/* STATUS + UPLOAD */}
-          <div className="mt-4 flex items-center gap-4">
+          <p className="text-slate-700 mt-3 leading-relaxed">{c.description}</p>
+
+          <div className="flex flex-wrap gap-4 my-4 text-slate-500 text-sm">
+            <p className="flex items-center gap-1">
+              📍 {c.city}, {c.state}
+            </p>
+            <p className="flex items-center gap-1">🏢 {c.landmark}</p>
+          </div>
+
+          {/* STATUS */}
+          <div className="mt-6 flex flex-wrap items-center gap-4 p-4 bg-slate-50 rounded-lg border border-slate-100">
             {/* STATUS BADGE */}
             <span
-              className={`px-3 py-1 rounded-full text-xs font-medium ${
-                c.status === "resolved"
-                  ? "bg-green-500/20 text-green-400"
-                  : c.status === "in progress"
-                  ? "bg-yellow-500/20 text-yellow-400"
-                  : "bg-red-500/20 text-red-400"
-              }`}
+              className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${c.status === "resolved"
+                ? "bg-green-100 text-green-700"
+                : c.status === "in progress"
+                  ? "bg-amber-100 text-amber-700"
+                  : "bg-red-100 text-red-700"
+                }`}
             >
-              {c.status.toUpperCase()}
+              {c.status}
             </span>
 
-            {/* STATUS SELECT */}
-            <select
-              value={c.status}
-              onChange={(e) => {
-                const newStatus = e.target.value;
-
-                if (newStatus === "resolved" && !c.afterImageUrl) {
-                  alert("Upload AFTER image before resolving!");
-                  return;
-                }
-
-                updateComplaint(c._id, newStatus, null);
-              }}
-              className="bg-slate-800 text-white px-3 py-2 rounded"
-            >
-              <option value="new">New</option>
-              <option value="in progress">In Progress</option>
-              <option value="resolved">Resolved</option>
-            </select>
-
-            {/* UPLOAD AFTER IMAGE */}
-            {c.status !== "resolved" && (
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) =>
-                  updateComplaint(c._id, null, e.target.files[0])
-                }
-                className="text-gray-300"
-              />
-            )}
+            <span className="text-sm text-slate-500 ml-auto">
+              Click to manage
+            </span>
           </div>
         </div>
       </div>

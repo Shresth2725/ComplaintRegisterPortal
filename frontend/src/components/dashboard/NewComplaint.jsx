@@ -72,18 +72,17 @@ const NewComplaint = ({
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <h2 className="text-2xl text-white font-bold mb-6">
+    <div className="max-w-3xl mx-auto">
+      <h2 className="text-2xl text-slate-900 font-bold mb-6">
         Register New Complaint
       </h2>
 
       {message.text && (
         <div
-          className={`p-4 mb-6 rounded-lg ${
-            message.type === "success"
-              ? "bg-green-500/20 text-green-300"
-              : "bg-red-500/20 text-red-300"
-          }`}
+          className={`p-4 mb-6 rounded-lg border ${message.type === "success"
+              ? "bg-green-50 border-green-200 text-green-700"
+              : "bg-red-50 border-red-200 text-red-700"
+            }`}
         >
           {message.text}
         </div>
@@ -91,13 +90,14 @@ const NewComplaint = ({
 
       <form
         onSubmit={handleSubmit}
-        className="bg-white/5 p-8 rounded-2xl border border-white/10 space-y-6"
+        className="bg-white p-8 rounded-xl border border-slate-200 shadow-sm space-y-6"
       >
         <TextArea
           label="Description"
           name="description"
           value={formData.description}
           onChange={handleChange}
+          placeholder="Describe the issue in detail..."
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -106,12 +106,14 @@ const NewComplaint = ({
             name="city"
             value={formData.city}
             onChange={handleChange}
+            placeholder="Enter city"
           />
           <Input
             label="State"
             name="state"
             value={formData.state}
             onChange={handleChange}
+            placeholder="Enter state"
           />
         </div>
 
@@ -120,28 +122,39 @@ const NewComplaint = ({
           name="landmark"
           value={formData.landmark}
           onChange={handleChange}
+          placeholder="Nearby landmark"
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <ReadOnly label="Latitude" value={formData.latitude} />
-          <ReadOnly label="Longitude" value={formData.longitude} />
+          <ReadOnly label="Latitude" value={formData.latitude} placeholder="Latitude" />
+          <ReadOnly label="Longitude" value={formData.longitude} placeholder="Longitude" />
         </div>
 
         <button
           type="button"
           onClick={getLocation}
-          className="w-full py-2 bg-blue-500/20 text-blue-300 rounded-lg"
+          className="w-full py-2 bg-blue-50 text-blue-700 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors font-medium"
         >
-          📍 Get Location
+          📍 Get Current Location
         </button>
 
         <div>
-          <label className="block mb-2 text-gray-300">Evidence Image</label>
-          <input type="file" onChange={handleFile} className="text-gray-400" />
+          <label className="block mb-2 text-slate-700 font-medium text-sm">Evidence Image</label>
+          <input
+            type="file"
+            onChange={handleFile}
+            className="block w-full text-sm text-slate-500
+              file:mr-4 file:py-2 file:px-4
+              file:rounded-full file:border-0
+              file:text-sm file:font-semibold
+              file:bg-blue-50 file:text-blue-700
+              hover:file:bg-blue-100
+            "
+          />
         </div>
 
         <button
-          className="w-full py-3 bg-purple-600 text-white rounded-lg"
+          className="w-full py-3 bg-blue-700 hover:bg-blue-800 text-white font-semibold rounded-lg transition-colors shadow-sm disabled:opacity-50"
           disabled={submitLoading}
         >
           {submitLoading ? "Submitting..." : "Submit Complaint"}
@@ -154,32 +167,33 @@ const NewComplaint = ({
 // Reusable components
 const Input = ({ label, ...props }) => (
   <div>
-    <label className="text-gray-300 mb-2 block">{label}</label>
+    <label className="text-slate-700 mb-2 block font-medium text-sm">{label}</label>
     <input
       {...props}
-      className="w-full px-4 py-3 bg-black/20 border border-white/10 text-white rounded-lg"
+      className="w-full px-4 py-3 bg-white border border-slate-300 text-slate-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
     />
   </div>
 );
 
 const TextArea = ({ label, ...props }) => (
   <div>
-    <label className="text-gray-300 mb-2 block">{label}</label>
+    <label className="text-slate-700 mb-2 block font-medium text-sm">{label}</label>
     <textarea
       {...props}
-      rows="3"
-      className="w-full px-4 py-3 bg-black/20 border border-white/10 text-white rounded-lg"
+      rows="4"
+      className="w-full px-4 py-3 bg-white border border-slate-300 text-slate-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
     />
   </div>
 );
 
-const ReadOnly = ({ label, value }) => (
+const ReadOnly = ({ label, value, placeholder }) => (
   <div>
-    <label className="text-gray-300 mb-2 block">{label}</label>
+    <label className="text-slate-700 mb-2 block font-medium text-sm">{label}</label>
     <input
       value={value}
       readOnly
-      className="w-full px-4 py-3 bg-black/20 border border-white/10 text-white rounded-lg opacity-70"
+      placeholder={placeholder}
+      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 text-slate-500 rounded-lg cursor-not-allowed"
     />
   </div>
 );

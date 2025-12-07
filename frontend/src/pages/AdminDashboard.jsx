@@ -13,7 +13,6 @@ const AdminDashboard = () => {
     resolvedComplaint: [],
   });
   const [loading, setLoading] = useState(false);
-  const [updatingId, setUpdatingId] = useState(null);
   const [message, setMessage] = useState({ type: "", text: "" });
 
   const navigate = useNavigate();
@@ -40,61 +39,33 @@ const AdminDashboard = () => {
     navigate("/login");
   };
 
-  // Unified update for status + image upload
-  const updateComplaint = async (id, status, file) => {
-    const formData = new FormData();
-    if (status) formData.append("status", status);
-    if (file) formData.append("imageUrl", file);
-
-    setUpdatingId(id);
-
-    try {
-      const res = await API.post(
-        `/complaint/update-complaint-status-upload-image/${id}`,
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-
-      if (res.data.success) {
-        setMessage({ type: "success", text: "Complaint updated!" });
-        await fetchComplaints();
-      }
-    } catch {
-      setMessage({ type: "error", text: "Update failed" });
-    }
-
-    setUpdatingId(null);
-    setTimeout(() => setMessage({ type: "", text: "" }), 3000);
-  };
-
   return (
-    <div className="min-h-screen bg-slate-900 flex">
+    <div className="min-h-screen bg-slate-50 flex font-sans">
       {/* SIDEBAR */}
-      <aside className="w-64 bg-slate-900 border-r border-white/10 hidden md:flex flex-col">
-        <div className="p-6">
-          <h1 className="text-2xl text-white font-bold">Admin Panel</h1>
+      <aside className="w-64 bg-white border-r border-slate-200 hidden md:flex flex-col">
+        <div className="p-6 border-b border-slate-100">
+          <h1 className="text-xl font-bold text-slate-900">Admin Panel</h1>
         </div>
 
-        <nav className="flex-1 px-4 space-y-2">
+        <nav className="flex-1 px-4 py-6 space-y-2">
           {["overview", "complaints"].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className={`w-full text-left px-4 py-3 rounded-lg ${
-                activeTab === tab
-                  ? "bg-purple-600 text-white"
-                  : "text-gray-400 hover:bg-white/5"
-              }`}
+              className={`w-full text-left px-4 py-3 rounded-lg transition-colors font-medium ${activeTab === tab
+                ? "bg-blue-50 text-blue-700"
+                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                }`}
             >
               {tab === "overview" ? "📊 Overview" : "📋 All Complaints"}
             </button>
           ))}
         </nav>
 
-        <div className="p-4 border-t border-white/10">
+        <div className="p-4 border-t border-slate-200 bg-slate-50/50">
           <button
             onClick={logout}
-            className="w-full px-4 py-2 bg-red-500/10 text-red-400 rounded-lg"
+            className="w-full px-4 py-2 bg-white text-red-600 border border-red-100 rounded-lg hover:bg-red-50 hover:border-red-200 transition-colors text-sm font-medium shadow-sm"
           >
             🚪 Logout
           </button>
@@ -102,13 +73,12 @@ const AdminDashboard = () => {
       </aside>
 
       {/* MAIN CONTENT */}
-      <main className="flex-1 p-6 md:p-10 bg-linear-to-br from-slate-900 to-purple-900/10 overflow-y-auto">
+      <main className="flex-1 p-6 md:p-10 overflow-y-auto h-screen">
         {/* Toast Message */}
         {message.text && (
           <div
-            className={`fixed top-4 right-4 px-6 py-3 rounded-lg ${
-              message.type === "success" ? "bg-green-500" : "bg-red-500"
-            } text-white`}
+            className={`fixed top-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 ${message.type === "success" ? "bg-green-600" : "bg-red-600"
+              } text-white font-medium`}
           >
             {message.text}
           </div>
@@ -123,8 +93,6 @@ const AdminDashboard = () => {
           <AllComplaints
             complaints={complaints}
             loading={loading}
-            updatingId={updatingId}
-            updateComplaint={updateComplaint}
           />
         )}
       </main>
