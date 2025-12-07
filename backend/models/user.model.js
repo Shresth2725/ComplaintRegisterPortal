@@ -9,30 +9,46 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+
     fullName: {
       type: String,
       required: true,
     },
+
     password: {
       type: String,
-      required: true,
-      minLenght: 6,
+      minLength: 6,
     },
+
+    googleId: {
+      type: String,
+      default: null,
+    },
+
+    isGoogleUser: {
+      type: Boolean,
+      default: false,
+    },
+
     profilePic: {
       type: String,
       default: "",
     },
+
     address: {
       type: String,
     },
+
     isAdmin: {
       type: Boolean,
       default: false,
       required: true,
     },
+
     otp: {
       type: Number,
     },
+
     isVerified: {
       type: Boolean,
       default: false,
@@ -41,23 +57,16 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-userSchema.methods.getJWT = async function () {
-  const user = this;
-
-  const token = jwt.sign({ _id: user.id }, process.env.JWT_SECRET_KEY, {
+userSchema.methods.getJWT = function () {
+  return jwt.sign({ _id: this.id }, process.env.JWT_SECRET_KEY, {
     expiresIn: "1d",
   });
-
-  return token;
 };
 
 userSchema.methods.checkPassword = async function (passwordInputByUser) {
-  const user = this;
-  const isPasswordValid = await bcrypt.compare(
-    passwordInputByUser,
-    user.password
-  );
-  return isPasswordValid;
+  if (!this.password) return false;
+
+  return await bcrypt.compare(passwordInputByUser, this.password);
 };
 
 const User = mongoose.model("User", userSchema);

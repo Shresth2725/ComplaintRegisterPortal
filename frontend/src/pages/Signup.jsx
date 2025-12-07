@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import API from "../api/axios";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -18,20 +20,37 @@ const Signup = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // GOOGLE LOGIN HANDLER
+  const handleGoogleSuccess = async (response) => {
+    try {
+      const decoded = jwtDecode(response.credential);
+
+      const res = await API.post("/auth/google-login", {
+        email: decoded.email,
+        fullName: decoded.name,
+        profilePic: decoded.picture,
+        googleId: decoded.sub,
+      });
+
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("userData", JSON.stringify(res.data.user));
+      navigate("/dashboard");
+    } catch (err) {
+      console.error(err);
+      setError("Google Login failed");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      // 1. Send Email to Backend for OTP
       const res = await API.post("/auth/send-otp", { email: formData.email });
 
       if (res.data.success) {
-        // 2. Save signup form temporarily
         localStorage.setItem("pendingSignup", JSON.stringify(formData));
-
-        // 3. Move to OTP page
         navigate("/otp-verify", { state: { email: formData.email } });
       }
     } catch (err) {
@@ -44,6 +63,7 @@ const Signup = () => {
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
+        {/* TITLE */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">Register</h1>
           <p className="text-gray-400">Create your account to get started</p>
@@ -56,6 +76,7 @@ const Signup = () => {
             </div>
           )}
 
+          {/* FORM */}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-gray-200 mb-2">
@@ -124,6 +145,14 @@ const Signup = () => {
               {loading ? "Sending OTP..." : "Sign Up"}
             </button>
           </form>
+
+          {/* GOOGLE BUTTON */}
+          <div className="mt-6 flex justify-center">
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={() => setError("Google Login failed")}
+            />
+          </div>
 
           <p className="mt-6 text-center text-gray-400 text-sm">
             Already have an account?{" "}

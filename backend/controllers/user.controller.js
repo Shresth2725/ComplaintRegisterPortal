@@ -203,3 +203,54 @@ export const checkAuth = (req, res) => {
       .json({ success: false, message: "Internal Server Error" });
   }
 };
+
+// Google OAUTH
+
+export const googleLogin = async (req, res) => {
+  try {
+    const { email, fullName, profilePic, googleId } = req.body;
+
+    if (!email || !googleId) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Google login data",
+      });
+    }
+
+    // Check if user exists
+    let user = await User.findOne({ email });
+
+    // Create new user if doesn't exist
+    if (!user) {
+      user = await User.create({
+        email,
+        fullName,
+        googleId,
+        profilePic,
+        isGoogleUser: true,
+        isVerified: true, // Google verifies email already
+      });
+    }
+
+    // Create a JWT token
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET_KEY, {
+      expiresIn: "7d",
+    });
+
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + 3600000),
+    });
+
+    return res.status(200).json({
+      success: true,
+      token,
+      user,
+    });
+  } catch (error) {
+    console.error("Google Login Error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Google login failed",
+    });
+  }
+};

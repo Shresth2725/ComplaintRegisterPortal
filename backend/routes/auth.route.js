@@ -7,6 +7,7 @@ import {
   logout,
   updateProfile,
   checkAuth,
+  googleLogin,
 } from "../controllers/user.controller.js";
 
 import { protectRoute } from "../middleware/auth.middleware.js";
@@ -33,5 +34,8 @@ authRouter.post(
   upload.single("profilePic"),
   updateProfile
 );
+
+// GOOGLE OAUTH
+authRouter.post("/google-login", googleLogin);
 
 export default authRouter;
