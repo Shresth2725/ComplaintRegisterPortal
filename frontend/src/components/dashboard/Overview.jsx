@@ -8,29 +8,20 @@ const Overview = ({ complaints, loading, setActiveTab }) => {
   return (
     <>
       {/* Title Section */}
-      <div
-        className="
-          bg-linear-to-br from-white/10 to-white/5 
-          border border-white/20 
-          p-6 rounded-2xl shadow-lg 
-          backdrop-blur-md mb-6
-          hover:shadow-xl hover:scale-[1.01]
-          transition-all duration-300 ease-out
-        "
-      >
-        <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-wide">
-          Your Complaints Overview
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-slate-900">
+          Overview
         </h1>
-        <p className="text-gray-300 text-sm mt-1">
-          Track the status and progress of all the issues you've reported.
+        <p className="text-slate-600 mt-1">
+          Track the status and progress of your reported issues.
         </p>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <StatCard title="Total Complaints" value={total} color="gray" />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <StatCard title="Total Complaints" value={total} color="blue" />
         <StatCard title="Resolved" value={resolved} color="green" />
-        <StatCard title="Pending" value={pending} color="yellow" />
+        <StatCard title="Pending" value={pending} color="amber" />
       </div>
 
       {/* Complaints List */}
@@ -43,22 +34,21 @@ const Overview = ({ complaints, loading, setActiveTab }) => {
   );
 };
 
-const StatCard = ({ title, value, color }) => (
-  <div
-    className="
-      bg-linear-to-br from-white/10 to-white/5 
-      border border-white/20 
-      p-6 rounded-2xl shadow-lg 
-      backdrop-blur-md 
-      hover:shadow-xl hover:scale-[1.02]
-      transition-all duration-300 ease-out
-    "
-  >
-    <h3 className={`text-${color}-300 text-sm font-semibold tracking-wide`}>
-      {title}
-    </h3>
-    <p className="text-4xl font-extrabold text-white mt-3">{value}</p>
-  </div>
-);
+const StatCard = ({ title, value, color }) => {
+  const colorClasses = {
+    blue: "bg-blue-50 text-blue-700 border-blue-100",
+    green: "bg-green-50 text-green-700 border-green-100",
+    amber: "bg-amber-50 text-amber-700 border-amber-100",
+  };
+
+  return (
+    <div className={`p-6 rounded-xl border ${colorClasses[color]} shadow-sm`}>
+      <h3 className="text-sm font-medium opacity-80 uppercase tracking-wider">
+        {title}
+      </h3>
+      <p className="text-3xl font-bold mt-2">{value}</p>
+    </div>
+  );
+};
 
 export default Overview;

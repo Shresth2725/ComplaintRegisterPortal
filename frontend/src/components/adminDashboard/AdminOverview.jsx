@@ -21,16 +21,16 @@ const AdminOverview = ({ complaints }) => {
     complaints.resolvedComplaint.length;
 
   const pieData = [
-    { name: "New", value: complaints.newComplaint.length, color: "#EF4444" },
+    { name: "New", value: complaints.newComplaint.length, color: "#3B82F6" }, // Blue
     {
       name: "In Progress",
       value: complaints.inProgressComplaint.length,
-      color: "#EAB308",
+      color: "#F59E0B", // Amber
     },
     {
       name: "Resolved",
       value: complaints.resolvedComplaint.length,
-      color: "#22C55E",
+      color: "#10B981", // Green
     },
   ];
 
@@ -52,26 +52,27 @@ const AdminOverview = ({ complaints }) => {
     displayName: item.name.replace(/_/g, " ").toUpperCase(),
   }));
 
-  const colors = ["#8B5CF6", "#EC4899", "#10B981", "#F59E0B", "#3B82F6"];
+  const colors = ["#3B82F6", "#8B5CF6", "#EC4899", "#10B981", "#F59E0B"];
 
   return (
     <>
-      <div className="bg-white/10 p-6 rounded-xl mb-6">
-        <h1 className="text-3xl text-white">Admin Dashboard</h1>
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-slate-900">Admin Dashboard</h1>
+        <p className="text-slate-600 mt-1">Overview of system performance and complaints.</p>
       </div>
 
       {/* STATS */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-        <StatCard title="Total" value={total} color="gray" />
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <StatCard title="Total" value={total} color="slate" />
         <StatCard
           title="New"
           value={complaints.newComplaint.length}
-          color="red"
+          color="blue"
         />
         <StatCard
           title="In Progress"
           value={complaints.inProgressComplaint.length}
-          color="yellow"
+          color="amber"
         />
         <StatCard
           title="Resolved"
@@ -80,48 +81,58 @@ const AdminOverview = ({ complaints }) => {
         />
       </div>
 
-      {/* PIE CHART */}
-      <div className="bg-white/10 p-6 rounded-xl mb-6">
-        <h2 className="text-xl text-white mb-4">Complaints Distribution</h2>
-        <div className="h-80">
-          <ResponsiveContainer>
-            <PieChart>
-              <Pie
-                data={pieData}
-                innerRadius={60}
-                outerRadius={100}
-                dataKey="value"
-              >
-                {pieData.map((entry, idx) => (
-                  <Cell key={idx} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* PIE CHART */}
+        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <h2 className="text-lg font-bold text-slate-900 mb-6">Complaints Distribution</h2>
+          <div className="h-80">
+            <ResponsiveContainer>
+              <PieChart>
+                <Pie
+                  data={pieData}
+                  innerRadius={60}
+                  outerRadius={100}
+                  dataKey="value"
+                  paddingAngle={1}
+                >
+                  {pieData.map((entry, idx) => (
+                    <Cell key={idx} fill={entry.color} stroke="none" />
+                  ))}
+                </Pie>
+                <Tooltip
+                  contentStyle={{ backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                  itemStyle={{ color: '#1e293b' }}
+                />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
         </div>
-      </div>
 
-      {/* CATEGORY BAR CHART */}
-      <div className="bg-white/10 p-6 rounded-xl">
-        <h2 className="text-xl text-white mb-4">Complaints by Category</h2>
+        {/* CATEGORY BAR CHART */}
+        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+          <h2 className="text-lg font-bold text-slate-900 mb-6">Complaints by Category</h2>
 
-        <div className="h-80">
-          <ResponsiveContainer>
-            <BarChart data={categoryData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-              <XAxis dataKey="displayName" stroke="#9CA3AF" />
-              <YAxis stroke="#9CA3AF" />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="count">
-                {categoryData.map((_, idx) => (
-                  <Cell key={idx} fill={colors[idx % colors.length]} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
+          <div className="h-80">
+            <ResponsiveContainer>
+              <BarChart data={categoryData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+                <XAxis dataKey="displayName" stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
+                <YAxis stroke="#64748b" fontSize={12} tickLine={false} axisLine={false} />
+                <Tooltip
+                  cursor={{ fill: '#f1f5f9' }}
+                  contentStyle={{ backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                  itemStyle={{ color: '#1e293b' }}
+                />
+                <Legend />
+                <Bar dataKey="count" radius={[4, 4, 0, 0]}>
+                  {categoryData.map((_, idx) => (
+                    <Cell key={idx} fill={colors[idx % colors.length]} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
       </div>
     </>

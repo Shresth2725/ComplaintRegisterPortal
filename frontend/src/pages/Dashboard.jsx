@@ -9,7 +9,13 @@ import NewComplaint from "../components/dashboard/NewComplaint";
 import Profile from "../components/dashboard/Profile";
 
 const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState(
+    localStorage.getItem("dashboardActiveTab") || "overview"
+  );
+
+  useEffect(() => {
+    localStorage.setItem("dashboardActiveTab", activeTab);
+  }, [activeTab]);
   const [complaints, setComplaints] = useState([]);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
@@ -65,7 +71,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 flex">
+    <div className="min-h-screen bg-slate-50 flex font-sans">
       <Sidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -73,7 +79,7 @@ const Dashboard = () => {
         logout={logout}
       />
 
-      <main className="flex-1 overflow-y-auto h-screen p-6 md:p-10 bg-gradient-to-br from-slate-900 to-purple-900/10">
+      <main className="flex-1 overflow-y-auto h-screen p-6 md:p-10">
         {activeTab === "overview" && (
           <Overview
             complaints={complaints}

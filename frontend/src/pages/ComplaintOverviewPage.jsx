@@ -27,142 +27,173 @@ const ComplaintOverviewPage = () => {
 
   if (loading)
     return (
-      <div className="p-6 text-gray-400 text-center">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 text-slate-500">
         Loading complaint details...
       </div>
     );
 
   if (!complaint)
     return (
-      <div className="p-6 text-gray-400 text-center">Complaint not found.</div>
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6 text-slate-500">
+        Complaint not found.
+      </div>
     );
 
   return (
-    <div className="min-h-screen bg-black text-white p-6">
-      {/* Back Button */}
-      <Link to="/dashboard" className="text-purple-400 hover:underline">
-        ← Back to Dashboard
-      </Link>
+    <div className="min-h-screen bg-slate-50 p-6 md:p-10 font-sans">
+      <div className="max-w-5xl mx-auto">
+        {/* Back Button */}
+        <Link
+          to={isAdmin ? "/admin-dashboard" : "/dashboard"}
+          className="text-blue-700 hover:text-blue-800 hover:underline font-medium inline-flex items-center gap-2 mb-6"
+        >
+          ← Back to Dashboard
+        </Link>
 
-      <h1 className="text-3xl mt-4 mb-6 font-semibold">Complaint Overview</h1>
+        <h1 className="text-3xl font-bold text-slate-900 mb-8">Complaint Overview</h1>
 
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-6">
-        {/* Description */}
-        <div>
-          <h2 className="text-xl font-semibold mb-2">Description</h2>
-          <p className="text-gray-300">{complaint.description}</p>
-        </div>
-
-        {/* Details Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Location Info */}
-          <div className="bg-white/5 rounded-xl border border-white/10 p-4">
-            <h3 className="text-lg font-semibold mb-1">Location</h3>
-            <p className="text-gray-300">📍 {complaint.landmark}</p>
-            <p className="text-gray-400 text-sm">
-              {complaint.city}, {complaint.state}
-            </p>
-            <p className="text-gray-400 text-sm mt-2">
-              Latitude: {complaint.latitude}
-            </p>
-            <p className="text-gray-400 text-sm">
-              Longitude: {complaint.longitude}
-            </p>
+        <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-8 space-y-8">
+          {/* Description */}
+          <div>
+            <h2 className="text-xl font-bold text-slate-900 mb-3">Description</h2>
+            <p className="text-slate-700 leading-relaxed text-lg">{complaint.description}</p>
           </div>
 
-          {/* Status */}
-          <div className="bg-white/5 rounded-xl border border-white/10 p-4">
-            <h3 className="text-lg font-semibold mb-1">Status</h3>
-            <p
-              className={`capitalize text-sm px-3 py-1 inline-block rounded-lg ${
-                complaint.status === "resolved"
-                  ? "bg-green-600"
-                  : complaint.status === "in progress"
-                  ? "bg-yellow-600"
-                  : "bg-red-600"
-              }`}
-            >
-              {complaint.status}
-            </p>
-
-            {complaint.category && (
-              <p className="mt-2 text-gray-400 text-sm">
-                Category: {complaint.category}
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* Map Section */}
-        <div className="mt-6">
-          <h2 className="text-xl font-semibold mb-3">Location on Map</h2>
-
-          <MapLeaflet lat={complaint.latitude} lng={complaint.longitude} />
-
-          {/* Google Maps Redirect */}
-          <div className="mt-4">
-            <a
-              href={`https://www.google.com/maps?q=${complaint.latitude},${complaint.longitude}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block px-5 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-white"
-            >
-              Open in Google Maps
-            </a>
-          </div>
-        </div>
-
-        {/* Images Section */}
-        <div>
-          <h2 className="text-xl font-semibold mb-4">Images</h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Before Image */}
-            {complaint.beforeImageUrl && (
-              <div className="bg-white/5 border border-white/10 rounded-xl p-4">
-                <p className="text-gray-400 mb-2">Before</p>
-                <img
-                  src={complaint.beforeImageUrl}
-                  className="rounded-xl border border-white/10 w-full h-64 object-cover"
-                  alt="Before"
-                />
+          {/* Details Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Location Info */}
+            <div className="bg-slate-50 rounded-xl border border-slate-200 p-6">
+              <h3 className="text-lg font-bold text-slate-900 mb-4">Location Details</h3>
+              <div className="space-y-3">
+                <p className="text-slate-700 flex items-start gap-2">
+                  <span className="text-xl">📍</span>
+                  <span className="font-medium">{complaint.landmark}</span>
+                </p>
+                <p className="text-slate-600 pl-7">
+                  {complaint.city}, {complaint.state}
+                </p>
+                <div className="pt-2 pl-7 text-sm text-slate-500 space-y-1 font-mono">
+                  <p>Lat: {complaint.latitude}</p>
+                  <p>Lng: {complaint.longitude}</p>
+                </div>
               </div>
-            )}
+            </div>
 
-            {/* After Image */}
-            {complaint.afterImageUrl ? (
-              <div className="bg-white/5 border border-white/10 rounded-xl p-4">
-                <p className="text-gray-400 mb-2">After</p>
-                <img
-                  src={complaint.afterImageUrl}
-                  className="rounded-xl border border-white/10 w-full h-64 object-cover"
-                  alt="After"
-                />
+            {/* Status */}
+            <div className="bg-slate-50 rounded-xl border border-slate-200 p-6">
+              <h3 className="text-lg font-bold text-slate-900 mb-4">Status & Category</h3>
+
+              <div className="mb-4">
+                <span className="text-slate-500 text-sm font-medium uppercase tracking-wider block mb-2">Current Status</span>
+                <span
+                  className={`capitalize px-4 py-2 rounded-lg font-bold inline-block ${complaint.status === "resolved"
+                      ? "bg-green-100 text-green-700 border border-green-200"
+                      : complaint.status === "in progress"
+                        ? "bg-amber-100 text-amber-700 border border-amber-200"
+                        : "bg-red-100 text-red-700 border border-red-200"
+                    }`}
+                >
+                  {complaint.status}
+                </span>
               </div>
-            ) : (
-              <div className="bg-white/5 border border-white/10 rounded-xl p-4 flex items-center justify-center h-64">
-                <p className="text-gray-500">No after-image uploaded yet</p>
+
+              {complaint.category && (
+                <div>
+                  <span className="text-slate-500 text-sm font-medium uppercase tracking-wider block mb-2">Category</span>
+                  <p className="text-slate-900 font-medium">
+                    {complaint.category.replace(/_/g, " ")}
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Map Section */}
+          <div>
+            <h2 className="text-xl font-bold text-slate-900 mb-4">Location on Map</h2>
+
+            <div className="rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+              <MapLeaflet lat={complaint.latitude} lng={complaint.longitude} />
+            </div>
+
+            {/* Google Maps Redirect */}
+            <div className="mt-4">
+              <a
+                href={`https://www.google.com/maps?q=${complaint.latitude},${complaint.longitude}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 rounded-lg font-medium transition-colors shadow-sm"
+              >
+                <span>🗺️</span> Open in Google Maps
+              </a>
+            </div>
+          </div>
+
+          {/* Images Section */}
+          <div>
+            <h2 className="text-xl font-bold text-slate-900 mb-4">Evidence & Resolution</h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Before Image */}
+              {complaint.beforeImageUrl && (
+                <div className="space-y-2">
+                  <p className="text-slate-500 font-medium text-sm uppercase tracking-wider">Before</p>
+                  <div className="rounded-xl overflow-hidden border border-slate-200 shadow-sm bg-slate-50">
+                    <img
+                      src={complaint.beforeImageUrl}
+                      className="w-full h-64 object-cover hover:scale-105 transition-transform duration-500"
+                      alt="Before"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* After Image */}
+              <div className="space-y-2">
+                <p className="text-slate-500 font-medium text-sm uppercase tracking-wider">After</p>
+                {complaint.afterImageUrl ? (
+                  <div className="rounded-xl overflow-hidden border-2 border-green-100 shadow-sm bg-green-50/30">
+                    <img
+                      src={complaint.afterImageUrl}
+                      className="w-full h-64 object-cover hover:scale-105 transition-transform duration-500"
+                      alt="After"
+                    />
+                  </div>
+                ) : (
+                  <div className="h-64 rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 flex flex-col items-center justify-center text-slate-400">
+                    <span className="text-4xl mb-2">📷</span>
+                    <p>No resolution image uploaded yet</p>
+                  </div>
+                )}
               </div>
-            )}
+            </div>
           </div>
-        </div>
 
-        {/* User Info */}
-        {!isAdmin && complaint.user && (
-          <div className="mt-6">
-            <h2 className="text-xl font-semibold mb-2">Submitted By</h2>
-            <p className="text-gray-300">{complaint.user.fullName}</p>
-            <p className="text-gray-400 text-sm">{complaint.user.email}</p>
+          {/* User Info */}
+          {!isAdmin && complaint.user && (
+            <div className="pt-8 border-t border-slate-100">
+              <h2 className="text-lg font-bold text-slate-900 mb-2">Submitted By</h2>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold border border-blue-200">
+                  {complaint.user.fullName?.charAt(0).toUpperCase()}
+                </div>
+                <div>
+                  <p className="text-slate-900 font-medium">{complaint.user.fullName}</p>
+                  <p className="text-slate-500 text-sm">{complaint.user.email}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* CHAT BUTTON AT THE BOTTOM */}
+          <div className="pt-6 text-center">
+            <button className="px-8 py-3 bg-blue-700 hover:bg-blue-800 text-white font-semibold rounded-lg shadow-sm transition-colors flex items-center gap-2 mx-auto">
+              <span>💬</span>
+              {isAdmin
+                ? `Chat with ${complaint.user?.fullName || 'User'}`
+                : "Chat with Admin"}
+            </button>
           </div>
-        )}
-
-        {/* CHAT BUTTON AT THE BOTTOM */}
-        <div className="mt-8 text-center">
-          <button className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg text-white text-lg">
-            {isAdmin
-              ? `Chat with ${complaint.user.fullName}`
-              : "Chat with Admin"}
-          </button>
         </div>
       </div>
     </div>
