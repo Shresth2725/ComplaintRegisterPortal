@@ -6,7 +6,13 @@ import AdminOverview from "../components/adminDashboard/AdminOverview";
 import AllComplaints from "../components/adminDashboard/AllComplaints";
 
 const AdminDashboard = () => {
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState(
+    localStorage.getItem("adminDashboardActiveTab") || "overview"
+  );
+
+  useEffect(() => {
+    localStorage.setItem("adminDashboardActiveTab", activeTab);
+  }, [activeTab]);
   const [complaints, setComplaints] = useState({
     newComplaint: [],
     inProgressComplaint: [],

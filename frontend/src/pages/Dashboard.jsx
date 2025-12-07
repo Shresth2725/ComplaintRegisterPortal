@@ -9,7 +9,13 @@ import NewComplaint from "../components/dashboard/NewComplaint";
 import Profile from "../components/dashboard/Profile";
 
 const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState(
+    localStorage.getItem("dashboardActiveTab") || "overview"
+  );
+
+  useEffect(() => {
+    localStorage.setItem("dashboardActiveTab", activeTab);
+  }, [activeTab]);
   const [complaints, setComplaints] = useState([]);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
