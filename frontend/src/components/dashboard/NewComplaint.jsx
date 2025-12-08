@@ -73,15 +73,15 @@ const NewComplaint = ({
 
   return (
     <div className="max-w-3xl mx-auto">
-      <h2 className="text-2xl text-slate-900 font-bold mb-6">
+      <h2 className="text-2xl text-slate-900 dark:text-white font-bold mb-6">
         Register New Complaint
       </h2>
 
       {message.text && (
         <div
           className={`p-4 mb-6 rounded-lg border ${message.type === "success"
-            ? "bg-green-50 border-green-200 text-green-700"
-            : "bg-red-50 border-red-200 text-red-700"
+            ? "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-900/30 text-green-700 dark:text-green-300"
+            : "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-900/30 text-red-700 dark:text-red-300"
             }`}
         >
           {message.text}
@@ -90,7 +90,7 @@ const NewComplaint = ({
 
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-8 rounded-xl border border-slate-200 shadow-sm space-y-6"
+        className="bg-white dark:bg-slate-800 p-8 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-6 transition-colors"
       >
         <TextArea
           label="Description"
@@ -133,22 +133,22 @@ const NewComplaint = ({
         <button
           type="button"
           onClick={getLocation}
-          className="w-full py-2 bg-blue-50 text-blue-700 border border-blue-200 rounded-lg hover:bg-blue-100 transition-colors font-medium"
+          className="w-full py-2 bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors font-medium"
         >
           📍 Get Current Location
         </button>
 
         <div>
-          <label className="block mb-2 text-slate-700 font-medium text-sm">Evidence Image</label>
+          <label className="block mb-2 text-slate-700 dark:text-slate-300 font-medium text-sm">Evidence Image</label>
           <input
             type="file"
             onChange={handleFile}
-            className="block w-full text-sm text-slate-500
+            className="block w-full text-sm text-slate-500 dark:text-slate-400
               file:mr-4 file:py-2 file:px-4
               file:rounded-full file:border-0
               file:text-sm file:font-semibold
-              file:bg-blue-50 file:text-blue-700
-              hover:file:bg-blue-100
+              file:bg-blue-50 dark:file:bg-blue-900/20 file:text-blue-700 dark:file:text-blue-300
+              hover:file:bg-blue-100 dark:hover:file:bg-blue-900/30
             "
           />
         </div>
@@ -167,33 +167,33 @@ const NewComplaint = ({
 // Reusable components
 const Input = ({ label, ...props }) => (
   <div>
-    <label className="text-slate-700 mb-2 block font-medium text-sm">{label}</label>
+    <label className="text-slate-700 dark:text-slate-300 mb-2 block font-medium text-sm">{label}</label>
     <input
       {...props}
-      className="w-full px-4 py-3 bg-white border border-slate-300 text-slate-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+      className="w-full px-4 py-3 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
     />
   </div>
 );
 
 const TextArea = ({ label, ...props }) => (
   <div>
-    <label className="text-slate-700 mb-2 block font-medium text-sm">{label}</label>
+    <label className="text-slate-700 dark:text-slate-300 mb-2 block font-medium text-sm">{label}</label>
     <textarea
       {...props}
       rows="4"
-      className="w-full px-4 py-3 bg-white border border-slate-300 text-slate-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+      className="w-full px-4 py-3 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
     />
   </div>
 );
 
 const ReadOnly = ({ label, value, placeholder }) => (
   <div>
-    <label className="text-slate-700 mb-2 block font-medium text-sm">{label}</label>
+    <label className="text-slate-700 dark:text-slate-300 mb-2 block font-medium text-sm">{label}</label>
     <input
       value={value}
       readOnly
       placeholder={placeholder}
-      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 text-slate-500 rounded-lg cursor-not-allowed"
+      className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 rounded-lg cursor-not-allowed"
     />
   </div>
 );

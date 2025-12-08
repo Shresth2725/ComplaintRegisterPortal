@@ -50,13 +50,13 @@ const Profile = ({
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h1 className="text-slate-900 text-2xl font-bold mb-6">Edit Profile</h1>
+      <h1 className="text-slate-900 dark:text-white text-2xl font-bold mb-6">Edit Profile</h1>
 
       {message.text && (
         <div
           className={`p-4 mb-6 rounded-lg border ${message.type === "success"
-              ? "bg-green-50 border-green-200 text-green-700"
-              : "bg-red-50 border-red-200 text-red-700"
+            ? "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-900/30 text-green-700 dark:text-green-300"
+            : "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-900/30 text-red-700 dark:text-red-300"
             }`}
         >
           {message.text}
@@ -65,10 +65,10 @@ const Profile = ({
 
       <form
         onSubmit={updateProfile}
-        className="bg-white p-8 rounded-xl border border-slate-200 shadow-sm space-y-6"
+        className="bg-white dark:bg-slate-800 p-8 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm space-y-6 transition-colors"
       >
         <div className="flex flex-col items-center">
-          <div className="w-24 h-24 rounded-full overflow-hidden bg-blue-100 border-4 border-white shadow-md flex items-center justify-center text-blue-700 text-3xl font-bold">
+          <div className="w-24 h-24 rounded-full overflow-hidden bg-blue-100 dark:bg-blue-900/50 border-4 border-white dark:border-slate-700 shadow-md flex items-center justify-center text-blue-700 dark:text-blue-300 text-3xl font-bold transition-all">
             {profileData.previewUrl ? (
               <img
                 src={profileData.previewUrl}
@@ -80,7 +80,7 @@ const Profile = ({
             )}
           </div>
 
-          <label className="cursor-pointer mt-4 bg-white border border-slate-300 px-4 py-2 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors text-sm font-medium shadow-sm">
+          <label className="cursor-pointer mt-4 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 px-4 py-2 text-slate-700 dark:text-slate-200 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors text-sm font-medium shadow-sm">
             Change Photo
             <input type="file" className="hidden" onChange={handleFile} />
           </label>
@@ -115,21 +115,21 @@ const Profile = ({
 
 const Input = ({ label, ...props }) => (
   <div>
-    <label className="block text-slate-700 mb-2 font-medium text-sm">{label}</label>
+    <label className="block text-slate-700 dark:text-slate-300 mb-2 font-medium text-sm">{label}</label>
     <input
       {...props}
-      className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+      className="w-full px-4 py-3 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
     />
   </div>
 );
 
 const TextArea = ({ label, ...props }) => (
   <div>
-    <label className="block text-slate-700 mb-2 font-medium text-sm">{label}</label>
+    <label className="block text-slate-700 dark:text-slate-300 mb-2 font-medium text-sm">{label}</label>
     <textarea
       {...props}
       rows="3"
-      className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+      className="w-full px-4 py-3 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
     />
   </div>
 );

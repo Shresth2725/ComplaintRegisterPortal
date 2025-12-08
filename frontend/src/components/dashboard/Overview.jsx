@@ -7,10 +7,10 @@ const Overview = ({ stats, loading, setActiveTab }) => {
     <>
       {/* Title Section */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-slate-900">
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
           Overview
         </h1>
-        <p className="text-slate-600 mt-1">
+        <p className="text-slate-600 dark:text-slate-400 mt-1">
           Track the status and progress of your reported issues.
         </p>
       </div>
@@ -32,13 +32,13 @@ const Overview = ({ stats, loading, setActiveTab }) => {
 
 const StatCard = ({ title, value, color }) => {
   const colorClasses = {
-    blue: "bg-blue-50 text-blue-700 border-blue-100",
-    green: "bg-green-50 text-green-700 border-green-100",
-    amber: "bg-amber-50 text-amber-700 border-amber-100",
+    blue: "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 border-blue-100 dark:border-blue-900/30",
+    green: "bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 border-green-100 dark:border-green-900/30",
+    amber: "bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300 border-amber-100 dark:border-amber-900/30",
   };
 
   return (
-    <div className={`p-6 rounded-xl border ${colorClasses[color]} shadow-sm`}>
+    <div className={`p-6 rounded-xl border ${colorClasses[color]} shadow-sm transition-colors`}>
       <h3 className="text-sm font-medium opacity-80 uppercase tracking-wider">
         {title}
       </h3>

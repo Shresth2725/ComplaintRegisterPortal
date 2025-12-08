@@ -93,18 +93,18 @@ const ComplaintChat = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-                <p className="text-slate-500">Loading chat...</p>
+            <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center">
+                <p className="text-slate-500 dark:text-slate-400">Loading chat...</p>
             </div>
         );
     }
 
     if (error) {
         return (
-            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+            <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center">
                 <div className="text-center">
                     <p className="text-red-500 mb-4">{error}</p>
-                    <Link to="/dashboard" className="text-blue-600 hover:underline">
+                    <Link to="/dashboard" className="text-blue-600 dark:text-blue-400 hover:underline">
                         ← Back to Dashboard
                     </Link>
                 </div>
@@ -113,19 +113,19 @@ const ComplaintChat = () => {
     }
 
     return (
-        <div className="min-h-screen bg-slate-50 p-6 flex flex-col">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 p-6 flex flex-col transition-colors">
             {/* Header */}
             <div className="mb-4">
                 <Link
                     to={currentUser?.isAdmin ? `/admin/complaint-overview/${complaintId}` : `/complaint-overview/${complaintId}`}
-                    className="text-blue-600 hover:text-blue-700 hover:underline font-medium text-sm transition-colors"
+                    className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:underline font-medium text-lg transition-colors"
                 >
-                    ← To Complaint
+                    ← View Complaint
                 </Link>
-                <h1 className="text-2xl mt-2 font-bold text-slate-900">
+                <h1 className="text-2xl mt-2 font-bold text-slate-900 dark:text-white">
                     Chat - {complaint?.description?.slice(0, 50)}...
                 </h1>
-                <p className="text-slate-500 text-sm mt-1">
+                <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">
                     {currentUser?.isAdmin ? "Chatting with User" : "Chatting with Admin"}
                 </p>
             </div>

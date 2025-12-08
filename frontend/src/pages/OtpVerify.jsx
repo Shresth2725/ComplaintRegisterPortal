@@ -35,29 +35,29 @@ const OtpVerify = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 font-sans">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4 font-sans transition-colors">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <Link to="/" className="text-2xl font-bold text-slate-900 tracking-tight mb-2 inline-block">
+          <Link to="/" className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight mb-2 inline-block">
             ComplaintPortal
           </Link>
-          <h1 className="text-3xl font-bold text-slate-800 mb-2">Verify OTP</h1>
-          <p className="text-slate-600">
+          <h1 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Verify OTP</h1>
+          <p className="text-slate-600 dark:text-slate-400">
             A verification code has been sent to{" "}
-            <span className="text-slate-900 font-semibold">{email}</span>
+            <span className="text-slate-900 dark:text-slate-200 font-semibold">{email}</span>
           </p>
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-xl p-8 shadow-sm border border-slate-200 text-center">
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-8 shadow-sm border border-slate-200 dark:border-slate-700 text-center transition-colors">
           {/* OTP Input */}
           <input
             type="number"
             maxLength={6}
             onChange={(e) => setOtp(e.target.value)}
-            className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900
-                       placeholder-slate-400 text-center text-xl tracking-[15px]
+            className="w-full px-4 py-3 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white
+                       placeholder-slate-400 dark:placeholder-slate-500 text-center text-xl tracking-[15px]
                        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             placeholder="••••••"
           />
@@ -72,9 +72,9 @@ const OtpVerify = () => {
           </button>
 
           {/* Resend Link */}
-          <p className="mt-6 text-slate-600 text-sm">
+          <p className="mt-6 text-slate-600 dark:text-slate-400 text-sm">
             Didn’t receive the OTP?{" "}
-            <span className="text-blue-700 font-semibold cursor-pointer hover:text-blue-800 hover:underline">
+            <span className="text-blue-700 dark:text-blue-400 font-semibold cursor-pointer hover:text-blue-800 dark:hover:text-blue-300 hover:underline">
               Resend Code
             </span>
           </p>

@@ -45,12 +45,12 @@ const UserChats = ({ setActiveTab }) => {
     };
 
     if (loading && page === 1 && complaints.length === 0)
-        return <p className="text-slate-500 text-center py-8">Loading chats...</p>;
+        return <p className="text-slate-500 dark:text-slate-400 text-center py-8">Loading chats...</p>;
 
     if (!loading && complaints.length === 0 && filter === "all")
         return (
-            <div className="text-center py-12 bg-white rounded-xl border border-slate-200 shadow-sm">
-                <p className="text-slate-500 mb-4">
+            <div className="text-center py-12 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm transition-colors">
+                <p className="text-slate-500 dark:text-slate-400 mb-4">
                     No chats found. Start by creating a complaint!
                 </p>
                 <button
@@ -66,12 +66,12 @@ const UserChats = ({ setActiveTab }) => {
         <div className="space-y-6">
             {/* FILTER HEADER */}
             <div className="flex justify-between items-center">
-                <h2 className="text-xl font-bold text-slate-900">My Chats</h2>
+                <h2 className="text-xl font-bold text-slate-900 dark:text-white">My Chats</h2>
 
                 <select
                     value={filter}
                     onChange={handleFilterChange}
-                    className="bg-white border border-slate-300 text-slate-700 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
+                    className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm transition-colors"
                 >
                     <option value="all">All Status</option>
                     <option value="new">New</option>
@@ -83,16 +83,16 @@ const UserChats = ({ setActiveTab }) => {
             {/* LIST */}
             <div className="flex flex-col gap-3">
                 {loading ? (
-                    <p className="text-slate-500 text-center py-8">Loading...</p>
+                    <p className="text-slate-500 dark:text-slate-400 text-center py-8">Loading...</p>
                 ) : complaints.length > 0 ? (
                     complaints.map((c) => (
                         <Link to={`/complaint/${c._id}/chat`} key={c._id}>
-                            <div className="bg-white border border-slate-200 rounded-lg p-4 hover:shadow-md transition-all flex justify-between items-center group">
+                            <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-4 hover:shadow-md transition-all flex justify-between items-center group">
                                 <div>
-                                    <p className="text-sm font-medium text-slate-900">
-                                        Complaint ID: <span className="font-mono text-slate-500">{c._id}</span>
+                                    <p className="text-sm font-medium text-slate-900 dark:text-white">
+                                        Complaint ID: <span className="font-mono text-slate-500 dark:text-slate-400">{c._id}</span>
                                     </p>
-                                    <p className="text-xs text-slate-500 mt-1">
+                                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                                         {new Date(c.createdAt).toLocaleDateString()} • {c.description.substring(0, 30)}...
                                     </p>
                                 </div>
@@ -100,22 +100,22 @@ const UserChats = ({ setActiveTab }) => {
                                     <span
                                         className={`px-3 py-1 rounded-full text-xs font-semibold
                                             ${c.status === "resolved"
-                                                ? "bg-green-100 text-green-700"
+                                                ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
                                                 : c.status === "in progress"
-                                                    ? "bg-amber-100 text-amber-700"
-                                                    : "bg-red-100 text-red-700"
+                                                    ? "bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400"
+                                                    : "bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400"
                                             }`}
                                     >
                                         {c.status.toUpperCase()}
                                     </span>
-                                    <span className="text-slate-400 group-hover:text-blue-600 transition-colors">→</span>
+                                    <span className="text-slate-400 dark:text-slate-500 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">→</span>
                                 </div>
                             </div>
                         </Link>
                     ))
                 ) : (
-                    <div className="text-center py-12 bg-white rounded-xl border border-slate-200 shadow-sm">
-                        <p className="text-slate-500">No chats found for this filter.</p>
+                    <div className="text-center py-12 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm transition-colors">
+                        <p className="text-slate-500 dark:text-slate-400">No chats found for this filter.</p>
                     </div>
                 )}
             </div>
@@ -126,22 +126,22 @@ const UserChats = ({ setActiveTab }) => {
                     <button
                         onClick={handlePrev}
                         disabled={page === 1}
-                        className={`px-4 py-2 rounded-lg border ${page === 1
-                            ? "bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed"
-                            : "bg-white text-slate-700 border-slate-300 hover:bg-slate-50"
+                        className={`px-4 py-2 rounded-lg border transition-colors ${page === 1
+                            ? "bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600 border-slate-200 dark:border-slate-700 cursor-not-allowed"
+                            : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700"
                             }`}
                     >
                         Previous
                     </button>
-                    <span className="text-slate-600 font-medium">
+                    <span className="text-slate-600 dark:text-slate-400 font-medium">
                         Page {page} of {totalPages}
                     </span>
                     <button
                         onClick={handleNext}
                         disabled={page === totalPages}
-                        className={`px-4 py-2 rounded-lg border ${page === totalPages
-                            ? "bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed"
-                            : "bg-white text-slate-700 border-slate-300 hover:bg-slate-50"
+                        className={`px-4 py-2 rounded-lg border transition-colors ${page === totalPages
+                            ? "bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600 border-slate-200 dark:border-slate-700 cursor-not-allowed"
+                            : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700"
                             }`}
                     >
                         Next

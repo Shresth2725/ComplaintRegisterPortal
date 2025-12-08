@@ -68,8 +68,8 @@ const AdminOverview = ({ complaints }) => {
   return (
     <>
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-slate-900">Admin Dashboard</h1>
-        <p className="text-slate-600 mt-1">Overview of system performance and complaints.</p>
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Admin Dashboard</h1>
+        <p className="text-slate-600 dark:text-slate-400 mt-1">Overview of system performance and complaints.</p>
       </div>
 
       {/* STATS */}
@@ -99,8 +99,8 @@ const AdminOverview = ({ complaints }) => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* PIE CHART */}
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-          <h2 className="text-lg font-bold text-slate-900 mb-6">Complaints Distribution</h2>
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm transition-colors">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Complaints Distribution</h2>
           <div className="h-80">
             <ResponsiveContainer>
               <PieChart>
@@ -126,8 +126,8 @@ const AdminOverview = ({ complaints }) => {
         </div>
 
         {/* CATEGORY BAR CHART */}
-        <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-          <h2 className="text-lg font-bold text-slate-900 mb-6">Complaints by Category</h2>
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm transition-colors">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Complaints by Category</h2>
 
           <div className="h-80">
             <ResponsiveContainer>

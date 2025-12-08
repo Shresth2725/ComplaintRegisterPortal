@@ -77,7 +77,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex font-sans">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex font-sans transition-colors duration-200">
       <Sidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -85,7 +85,7 @@ const Dashboard = () => {
         logout={logout}
       />
 
-      <main className="flex-1 overflow-y-auto h-screen p-6 md:p-10">
+      <main className="flex-1 overflow-y-auto h-screen p-6 md:p-10 transition-colors duration-200">
         {activeTab === "overview" && (
           <Overview
             stats={stats}

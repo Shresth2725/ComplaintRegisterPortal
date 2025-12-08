@@ -70,23 +70,23 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 font-sans">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4 font-sans transition-colors">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <Link to="/" className="text-2xl font-bold text-slate-900 tracking-tight mb-2 inline-block">
+          <Link to="/" className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight mb-2 inline-block">
             ComplaintPortal
           </Link>
-          <h1 className="text-3xl font-bold text-slate-800 mb-2">Welcome Back</h1>
-          <p className="text-slate-600">Login to your account to continue</p>
+          <h1 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Welcome Back</h1>
+          <p className="text-slate-600 dark:text-slate-400">Login to your account to continue</p>
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-xl p-8 shadow-sm border border-slate-200">
+        <div className="bg-white dark:bg-slate-800 rounded-xl p-8 shadow-sm border border-slate-200 dark:border-slate-700 transition-colors">
           {/* Error Message */}
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-red-700 text-sm font-medium">{error}</p>
+            <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/30 rounded-lg">
+              <p className="text-red-700 dark:text-red-300 text-sm font-medium">{error}</p>
             </div>
           )}
 
@@ -95,7 +95,7 @@ const Login = () => {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-slate-700 mb-2"
+                className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2"
               >
                 Email Address
               </label>
@@ -107,7 +107,7 @@ const Login = () => {
                 onChange={handleChange}
                 required
                 placeholder="john@example.com"
-                className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-3 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               />
             </div>
 
@@ -115,7 +115,7 @@ const Login = () => {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-slate-700 mb-2"
+                className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2"
               >
                 Password
               </label>
@@ -127,7 +127,7 @@ const Login = () => {
                 onChange={handleChange}
                 required
                 placeholder="••••••••"
-                className="w-full px-4 py-3 bg-white border border-slate-300 rounded-lg text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-3 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               />
             </div>
 
@@ -139,11 +139,11 @@ const Login = () => {
                 name="isAdmin"
                 checked={formData.isAdmin}
                 onChange={handleChange}
-                className="w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500 cursor-pointer"
+                className="w-4 h-4 text-blue-600 border-slate-300 dark:border-slate-600 rounded focus:ring-blue-500 cursor-pointer bg-white dark:bg-slate-900"
               />
               <label
                 htmlFor="isAdmin"
-                className="ml-3 text-sm font-medium text-slate-700 cursor-pointer"
+                className="ml-3 text-sm font-medium text-slate-700 dark:text-slate-300 cursor-pointer"
               >
                 Login as Admin
               </label>
@@ -170,10 +170,10 @@ const Login = () => {
           <div className="mt-6">
             <div className="relative mb-6">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-slate-200"></div>
+                <div className="w-full border-t border-slate-200 dark:border-slate-700"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-slate-500">Or continue with</span>
+                <span className="px-2 bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400">Or continue with</span>
               </div>
             </div>
             <div className="flex justify-center">
@@ -185,7 +185,7 @@ const Login = () => {
           </div>
 
           {/* Signup Link */}
-          <p className="mt-6 text-center text-slate-600 text-sm">
+          <p className="mt-6 text-center text-slate-600 dark:text-slate-400 text-sm">
             Don't have an account?{" "}
             <Link
               to="/signup"
@@ -207,7 +207,7 @@ const Login = () => {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-slate-500 text-xs mt-8">
+        <p className="text-center text-slate-500 dark:text-slate-500 text-xs mt-8">
           © 2025 Complaint Register Portal. All rights reserved.
         </p>
       </div>

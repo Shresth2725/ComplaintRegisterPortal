@@ -45,18 +45,18 @@ const AllComplaints = () => {
   };
 
   if (loading && page === 1 && complaints.length === 0)
-    return <p className="text-slate-500 text-center py-8">Loading...</p>;
+    return <p className="text-slate-500 dark:text-slate-400 text-center py-8">Loading...</p>;
 
   return (
     <div className="space-y-6">
       {/* FILTER HEADER */}
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-bold text-slate-900">All Complaints</h2>
+        <h2 className="text-xl font-bold text-slate-900 dark:text-white">All Complaints</h2>
 
         <select
           value={filter}
           onChange={handleFilterChange}
-          className="bg-white border border-slate-300 text-slate-700 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
+          className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm transition-colors"
         >
           <option value="all">All Status</option>
           <option value="new">New</option>
@@ -68,7 +68,7 @@ const AllComplaints = () => {
       {/* LIST */}
       <div className="grid gap-6">
         {loading ? (
-          <p className="text-slate-500 text-center py-8">Loading...</p>
+          <p className="text-slate-500 dark:text-slate-400 text-center py-8">Loading...</p>
         ) : complaints.length > 0 ? (
           complaints.map((complaint) => (
             <Link
@@ -79,8 +79,8 @@ const AllComplaints = () => {
             </Link>
           ))
         ) : (
-          <div className="text-center py-12 bg-white rounded-xl border border-slate-200 shadow-sm">
-            <p className="text-slate-500">No complaints found for this filter.</p>
+          <div className="text-center py-12 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm transition-colors">
+            <p className="text-slate-500 dark:text-slate-400">No complaints found for this filter.</p>
           </div>
         )}
       </div>
@@ -91,22 +91,22 @@ const AllComplaints = () => {
           <button
             onClick={handlePrev}
             disabled={page === 1}
-            className={`px-4 py-2 rounded-lg border ${page === 1
-              ? "bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed"
-              : "bg-white text-slate-700 border-slate-300 hover:bg-slate-50"
+            className={`px-4 py-2 rounded-lg border transition-colors ${page === 1
+              ? "bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600 border-slate-200 dark:border-slate-700 cursor-not-allowed"
+              : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700"
               }`}
           >
             Previous
           </button>
-          <span className="text-slate-600 font-medium">
+          <span className="text-slate-600 dark:text-slate-400 font-medium">
             Page {page} of {totalPages}
           </span>
           <button
             onClick={handleNext}
             disabled={page === totalPages}
-            className={`px-4 py-2 rounded-lg border ${page === totalPages
-              ? "bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed"
-              : "bg-white text-slate-700 border-slate-300 hover:bg-slate-50"
+            className={`px-4 py-2 rounded-lg border transition-colors ${page === totalPages
+              ? "bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600 border-slate-200 dark:border-slate-700 cursor-not-allowed"
+              : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-700"
               }`}
           >
             Next
