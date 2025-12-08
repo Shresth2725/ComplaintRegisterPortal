@@ -16,7 +16,12 @@ const Dashboard = () => {
   useEffect(() => {
     localStorage.setItem("dashboardActiveTab", activeTab);
   }, [activeTab]);
-  const [complaints, setComplaints] = useState([]);
+  const [stats, setStats] = useState({
+    total: 0,
+    newComplaint: 0,
+    inProgressComplaint: 0,
+    resolvedComplaint: 0,
+  });
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState({ type: "", text: "" });
@@ -52,14 +57,14 @@ const Dashboard = () => {
         previewUrl: parsed.profilePic || null,
       });
     }
-    fetchComplaints();
+    fetchStats();
   }, []);
 
-  const fetchComplaints = async () => {
+  const fetchStats = async () => {
     setLoading(true);
     try {
-      const res = await API.get("/complaint/get-complaints");
-      if (res.data.success) setComplaints(res.data.complaints);
+      const res = await API.get("/complaint/my-stats");
+      if (res.data.success) setStats(res.data.stats);
     } finally {
       setLoading(false);
     }
@@ -82,7 +87,7 @@ const Dashboard = () => {
       <main className="flex-1 overflow-y-auto h-screen p-6 md:p-10">
         {activeTab === "overview" && (
           <Overview
-            complaints={complaints}
+            stats={stats}
             loading={loading}
             setActiveTab={setActiveTab}
           />
@@ -102,7 +107,7 @@ const Dashboard = () => {
             setSubmitLoading={setSubmitLoading}
             message={message}
             setMessage={setMessage}
-            fetchComplaints={fetchComplaints}
+            fetchComplaints={fetchStats}
           />
         )}
         {activeTab === "profile" && (

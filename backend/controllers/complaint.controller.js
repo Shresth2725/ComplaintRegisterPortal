@@ -592,3 +592,151 @@ export const rateComplaint = async (req, res) => {
     });
   }
 };
+
+// Get Complaint Stats - ADMIN
+export const getComplaintStats = async (req, res) => {
+  try {
+    if (!req.user.isAdmin) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not an admin",
+      });
+    }
+
+    const complaints = await Complaint.find();
+
+    const newComplaint = complaints.filter((c) => c.status === "new");
+    const inProgressComplaint = complaints.filter(
+      (c) => c.status === "in progress"
+    );
+    const resolvedComplaint = complaints.filter((c) => c.status === "resolved");
+
+    res.status(200).json({
+      success: true,
+      stats: {
+        newComplaint,
+        inProgressComplaint,
+        resolvedComplaint,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: `Error fetching stats: ${error.message}`,
+    });
+  }
+};
+
+// Get Paginated Complaints - ADMIN
+export const getPaginatedComplaints = async (req, res) => {
+  try {
+    if (!req.user.isAdmin) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not an admin",
+      });
+    }
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const status = req.query.status;
+
+    const query = {};
+    if (status && status !== "all") {
+      query.status = status;
+    }
+
+    const total = await Complaint.countDocuments(query);
+    const totalPages = Math.ceil(total / limit);
+    const skip = (page - 1) * limit;
+
+    const complaints = await Complaint.find(query)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .populate("user");
+
+    res.status(200).json({
+      success: true,
+      complaints,
+      pagination: {
+        total,
+        totalPages,
+        currentPage: page,
+        limit,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: `Error fetching paginated complaints: ${error.message}`,
+    });
+  }
+};
+
+// Get User Complaint Stats
+export const getMyComplaintStats = async (req, res) => {
+  try {
+    const complaints = await Complaint.find({ user: req.user._id });
+
+    const newComplaint = complaints.filter((c) => c.status === "new");
+    const inProgressComplaint = complaints.filter(
+      (c) => c.status === "in progress"
+    );
+    const resolvedComplaint = complaints.filter((c) => c.status === "resolved");
+
+    res.status(200).json({
+      success: true,
+      stats: {
+        total: complaints.length,
+        newComplaint: newComplaint.length,
+        inProgressComplaint: inProgressComplaint.length,
+        resolvedComplaint: resolvedComplaint.length,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: `Error fetching user stats: ${error.message}`,
+    });
+  }
+};
+
+// Get User Paginated Complaints
+export const getMyPaginatedComplaints = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const status = req.query.status;
+
+    const query = { user: req.user._id };
+    if (status && status !== "all") {
+      query.status = status;
+    }
+
+    const total = await Complaint.countDocuments(query);
+    const totalPages = Math.ceil(total / limit);
+    const skip = (page - 1) * limit;
+
+    const complaints = await Complaint.find(query)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    res.status(200).json({
+      success: true,
+      complaints,
+      pagination: {
+        total,
+        totalPages,
+        currentPage: page,
+        limit,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: `Error fetching user paginated complaints: ${error.message}`,
+    });
+  }
+};

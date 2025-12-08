@@ -13,7 +13,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     localStorage.setItem("adminDashboardActiveTab", activeTab);
   }, [activeTab]);
-  const [complaints, setComplaints] = useState({
+  const [stats, setStats] = useState({
     newComplaint: [],
     inProgressComplaint: [],
     resolvedComplaint: [],
@@ -26,16 +26,17 @@ const AdminDashboard = () => {
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("userData"));
     if (!data?.isAdmin) navigate("/dashboard");
-    fetchComplaints();
+    if (!data?.isAdmin) navigate("/dashboard");
+    fetchStats();
   }, []);
 
-  const fetchComplaints = async () => {
+  const fetchStats = async () => {
     setLoading(true);
     try {
-      const res = await API.get("/complaint/get-all-complaints");
-      if (res.data.success) setComplaints(res.data.complaints);
+      const res = await API.get("/complaint/admin/stats");
+      if (res.data.success) setStats(res.data.stats);
     } catch {
-      setMessage({ type: "error", text: "Failed to load complaints" });
+      setMessage({ type: "error", text: "Failed to load stats" });
     }
     setLoading(false);
   };
@@ -92,14 +93,11 @@ const AdminDashboard = () => {
 
         {/* TABS */}
         {activeTab === "overview" && (
-          <AdminOverview complaints={complaints} loading={loading} />
+          <AdminOverview complaints={stats} loading={loading} />
         )}
 
         {activeTab === "complaints" && (
-          <AllComplaints
-            complaints={complaints}
-            loading={loading}
-          />
+          <AllComplaints />
         )}
       </main>
     </div>

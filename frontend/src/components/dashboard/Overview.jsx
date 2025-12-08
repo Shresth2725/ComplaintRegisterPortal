@@ -1,9 +1,7 @@
 import MyComplaints from "./MyComplaints";
 
-const Overview = ({ complaints, loading, setActiveTab }) => {
-  const total = complaints.length;
-  const resolved = complaints.filter((c) => c.status === "resolved").length;
-  const pending = total - resolved;
+const Overview = ({ stats, loading, setActiveTab }) => {
+  const { total, newComplaint, inProgressComplaint, resolvedComplaint } = stats;
 
   return (
     <>
@@ -20,14 +18,12 @@ const Overview = ({ complaints, loading, setActiveTab }) => {
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <StatCard title="Total Complaints" value={total} color="blue" />
-        <StatCard title="Resolved" value={resolved} color="green" />
-        <StatCard title="Pending" value={pending} color="amber" />
+        <StatCard title="Resolved" value={resolvedComplaint} color="green" />
+        <StatCard title="Pending" value={newComplaint + inProgressComplaint} color="amber" />
       </div>
 
       {/* Complaints List */}
       <MyComplaints
-        complaints={complaints}
-        loading={loading}
         setActiveTab={setActiveTab}
       />
     </>
