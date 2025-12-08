@@ -32,7 +32,36 @@ export const sendOtp = async (req, res) => {
       expiresAt: Date.now() + 5 * 60 * 1000,
     });
 
-    await sendMail(email, "Your Verification OTP", `Your OTP is ${otp}`);
+    await sendMail(
+      email,
+      "Your Verification OTP 🔐",
+      `
+  <div style="font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; color: #333;">
+    <h2 style="color: #2b6cb0;">Email Verification</h2>
+
+    <p>Hi,</p>
+
+    <p>Your One-Time Password (OTP) for email verification is:</p>
+
+    <div style="
+      font-size: 24px;
+      font-weight: bold;
+      background: #f3f4f6;
+      padding: 10px 20px;
+      border-left: 4px solid #2b6cb0;
+      display: inline-block;
+      margin: 10px 0;
+      border-radius: 5px;
+    ">
+      ${otp}
+    </div>
+
+    <p>This OTP is valid for <strong>5 minutes</strong>. Do not share it with anyone.</p>
+
+    <p style="margin-top: 20px;">Regards,<br><strong>Complaint Management Team</strong></p>
+  </div>
+  `
+    );
 
     return res.json({ success: true, message: "OTP sent successfully" });
   } catch (error) {

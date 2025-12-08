@@ -8,13 +8,13 @@ export const transporter = nodemailer.createTransport({
   },
 });
 
-export const sendMail = async (to, subject, text) => {
+export const sendMail = async (to, subject, htmlContent) => {
   try {
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to,
       subject,
-      text,
+      html: htmlContent,
     });
   } catch (error) {
     console.log("Email send error:", error.message);

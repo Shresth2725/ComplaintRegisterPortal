@@ -436,9 +436,6 @@ export const updateComplaint = async (req, res) => {
       });
     }
 
-    // ---------------------------
-    // 1. HANDLE IMAGE UPLOAD
-    // ---------------------------
     if (req.file) {
       try {
         const uploaded = await cloudinary.uploader.upload(req.file.path);
@@ -457,10 +454,6 @@ export const updateComplaint = async (req, res) => {
       }
     }
 
-    // ---------------------------
-    // 2. HANDLE STATUS UPDATE
-    // (only when NO file is uploaded)
-    // ---------------------------
     if (!req.file && status) {
       complaint.status = status.toLowerCase();
     }
@@ -472,8 +465,44 @@ export const updateComplaint = async (req, res) => {
     if (complaint.status === "resolved") {
       await sendMail(
         complaint.user.email,
-        "Your Complaint Has Been Resolved",
-        `Hello ${complaint.user.fullName}, your complaint "${complaint.description}" has been resolved.`
+        "Your Complaint Has Been Resolved ✔️",
+        `
+    <div style="font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; color: #333;">
+      <h2 style="color: #2b6cb0;">Your Complaint Has Been Resolved</h2>
+
+      <p>Hi ${complaint.user.fullName},</p>
+
+      <p>
+        We are happy to inform you that your complaint has been successfully resolved.
+      </p>
+
+      <div style="background: #f3f4f6; padding: 15px; border-left: 4px solid #2b6cb0; margin: 20px 0;">
+        <strong>Complaint:</strong><br />
+        ${complaint.description}
+      </div>
+
+      <p style="margin-bottom: 10px;">
+        Here is the latest image after resolution:
+      </p>
+
+      <div style="text-align: center; margin: 20px 0;">
+        <img 
+          src="${complaint.afterImageUrl}" 
+          alt="Resolved Complaint Image" 
+          style="max-width: 100%; border-radius: 10px; border: 1px solid #ccc;"
+        />
+      </div>
+
+      <p>
+        If you think further improvement is needed or want to share feedback, feel free to reply to this email.
+      </p>
+
+      <p style="margin-top: 30px;">
+        Regards,<br />
+        <strong>Complaint Management Team</strong>
+      </p>
+    </div>
+    `
       );
     }
 
