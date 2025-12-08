@@ -4,6 +4,7 @@ import API from "../api/axios";
 
 import AdminOverview from "../components/adminDashboard/AdminOverview";
 import AllComplaints from "../components/adminDashboard/AllComplaints";
+import AdminChats from "../components/adminDashboard/AdminChats";
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState(
@@ -55,7 +56,7 @@ const AdminDashboard = () => {
         </div>
 
         <nav className="flex-1 px-4 py-6 space-y-2">
-          {["overview", "complaints"].map((tab) => (
+          {["overview", "complaints", "chats"].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -64,7 +65,9 @@ const AdminDashboard = () => {
                 : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
                 }`}
             >
-              {tab === "overview" ? "📊 Overview" : "📋 All Complaints"}
+              {tab === "overview" && "📊 Overview"}
+              {tab === "complaints" && "📋 All Complaints"}
+              {tab === "chats" && "💬 Chats"}
             </button>
           ))}
         </nav>
@@ -98,6 +101,10 @@ const AdminDashboard = () => {
 
         {activeTab === "complaints" && (
           <AllComplaints />
+        )}
+
+        {activeTab === "chats" && (
+          <AdminChats />
         )}
       </main>
     </div>

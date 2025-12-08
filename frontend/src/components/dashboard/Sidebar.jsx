@@ -8,17 +8,18 @@ const Sidebar = ({ activeTab, setActiveTab, user, logout }) => {
       </div>
 
       <nav className="flex-1 px-4 py-6 space-y-2">
-        {["overview", "new-complaint"].map((tab) => (
+        {["overview", "new-complaint", "chats"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
             className={`w-full text-left px-4 py-3 rounded-lg transition-colors font-medium ${activeTab === tab
-                ? "bg-blue-50 text-blue-700"
-                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+              ? "bg-blue-50 text-blue-700"
+              : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
               }`}
           >
             {tab === "overview" && "📊 Overview"}
             {tab === "new-complaint" && "➕ New Complaint"}
+            {tab === "chats" && "💬 Chats"}
           </button>
         ))}
       </nav>

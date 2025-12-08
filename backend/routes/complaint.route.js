@@ -13,6 +13,8 @@ import {
   getPaginatedComplaints,
   getMyComplaintStats,
   getMyPaginatedComplaints,
+  getComplaintsWithMessages,
+  getMyComplaintsWithMessages,
 } from "../controllers/complaint.controller.js";
 import { protectRoute } from "../middleware/auth.middleware.js";
 import { upload } from "../middleware/uploads.js";
@@ -61,9 +63,19 @@ complaintRouter.get("/get-complaint-data/:id", protectRoute, getComplaint);
 complaintRouter.post("/rate/:id", protectRoute, rateComplaint);
 
 complaintRouter.get("/admin/stats", protectRoute, getComplaintStats);
+complaintRouter.get(
+  "/admin/active-chats",
+  protectRoute,
+  getComplaintsWithMessages
+);
 complaintRouter.get("/admin/list", protectRoute, getPaginatedComplaints);
 
 complaintRouter.get("/my-stats", protectRoute, getMyComplaintStats);
+complaintRouter.get(
+  "/my-active-chats",
+  protectRoute,
+  getMyComplaintsWithMessages
+);
 complaintRouter.get("/my-list", protectRoute, getMyPaginatedComplaints);
 
 export default complaintRouter;

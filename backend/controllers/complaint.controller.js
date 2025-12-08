@@ -1,6 +1,7 @@
 import { log } from "console";
 import cloudinary from "../config/cloudinary.js";
 import Complaint from "../models/complaint.model.js";
+import Message from "../models/message.model.js";
 import fs from "fs";
 import {
   roadKeywords,
@@ -737,6 +738,104 @@ export const getMyPaginatedComplaints = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: `Error fetching user paginated complaints: ${error.message}`,
+    });
+  }
+};
+
+// Get complaints with messages - ADMIN
+export const getComplaintsWithMessages = async (req, res) => {
+  try {
+    if (!req.user.isAdmin) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not an admin",
+      });
+    }
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const status = req.query.status;
+
+    // 1. Get distinct complaint IDs that have messages
+    const complaintIds = await Message.distinct("complaintId");
+
+    const query = { _id: { $in: complaintIds } };
+    if (status && status !== "all") {
+      query.status = status;
+    }
+
+    const total = await Complaint.countDocuments(query);
+    const totalPages = Math.ceil(total / limit);
+    const skip = (page - 1) * limit;
+
+    const complaints = await Complaint.find(query)
+      .sort({ updatedAt: -1 }) // Sort by recently updated
+      .skip(skip)
+      .limit(limit)
+      .populate("user");
+
+    res.status(200).json({
+      success: true,
+      complaints,
+      pagination: {
+        total,
+        totalPages,
+        currentPage: page,
+        limit,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: `Error fetching active chats: ${error.message}`,
+    });
+  }
+};
+
+// Get active chats for current user
+export const getMyComplaintsWithMessages = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const status = req.query.status;
+
+    // 1. Get distinct complaint IDs where user is sender or receiver
+    const complaintIds = await Message.distinct("complaintId", {
+      $or: [{ fromUser: req.user._id }, { toUser: req.user._id }],
+    });
+
+    const query = {
+      _id: { $in: complaintIds },
+      user: req.user._id, // Ensure it's their own complaint
+    };
+
+    if (status && status !== "all") {
+      query.status = status;
+    }
+
+    const total = await Complaint.countDocuments(query);
+    const totalPages = Math.ceil(total / limit);
+    const skip = (page - 1) * limit;
+
+    const complaints = await Complaint.find(query)
+      .sort({ updatedAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    res.status(200).json({
+      success: true,
+      complaints,
+      pagination: {
+        total,
+        totalPages,
+        currentPage: page,
+        limit,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: `Error fetching user active chats: ${error.message}`,
     });
   }
 };

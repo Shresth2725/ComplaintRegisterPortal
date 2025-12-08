@@ -7,6 +7,7 @@ import Overview from "../components/dashboard/Overview";
 import MyComplaints from "../components/dashboard/MyComplaints";
 import NewComplaint from "../components/dashboard/NewComplaint";
 import Profile from "../components/dashboard/Profile";
+import UserChats from "../components/dashboard/UserChats";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState(
@@ -109,6 +110,9 @@ const Dashboard = () => {
             setMessage={setMessage}
             fetchComplaints={fetchStats}
           />
+        )}
+        {activeTab === "chats" && (
+          <UserChats setActiveTab={setActiveTab} />
         )}
         {activeTab === "profile" && (
           <Profile

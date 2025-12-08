@@ -93,18 +93,18 @@ const ComplaintChat = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-black text-white flex items-center justify-center">
-                <p className="text-gray-400">Loading chat...</p>
+            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+                <p className="text-slate-500">Loading chat...</p>
             </div>
         );
     }
 
     if (error) {
         return (
-            <div className="min-h-screen bg-black text-white flex items-center justify-center">
+            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
                 <div className="text-center">
-                    <p className="text-red-400 mb-4">{error}</p>
-                    <Link to="/dashboard" className="text-purple-400 hover:underline">
+                    <p className="text-red-500 mb-4">{error}</p>
+                    <Link to="/dashboard" className="text-blue-600 hover:underline">
                         ← Back to Dashboard
                     </Link>
                 </div>
@@ -113,19 +113,19 @@ const ComplaintChat = () => {
     }
 
     return (
-        <div className="min-h-screen bg-black text-white p-6 flex flex-col">
+        <div className="min-h-screen bg-slate-50 p-6 flex flex-col">
             {/* Header */}
             <div className="mb-4">
                 <Link
                     to={currentUser?.isAdmin ? `/admin/complaint-overview/${complaintId}` : `/complaint-overview/${complaintId}`}
-                    className="text-purple-400 hover:underline"
+                    className="text-blue-600 hover:text-blue-700 hover:underline font-medium text-sm transition-colors"
                 >
-                    ← Back to Complaint
+                    ← To Complaint
                 </Link>
-                <h1 className="text-2xl mt-2 font-semibold">
+                <h1 className="text-2xl mt-2 font-bold text-slate-900">
                     Chat - {complaint?.description?.slice(0, 50)}...
                 </h1>
-                <p className="text-gray-400 text-sm mt-1">
+                <p className="text-slate-500 text-sm mt-1">
                     {currentUser?.isAdmin ? "Chatting with User" : "Chatting with Admin"}
                 </p>
             </div>
