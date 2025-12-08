@@ -66,7 +66,7 @@ const Sidebar = ({ activeTab, setActiveTab, user, logout }) => {
           <div className="h-6 w-px bg-slate-200 dark:bg-slate-700 mx-1"></div>
           <button
             onClick={logout}
-            className="flex-1 flex items-center gap-2 px-3 py-2 text-slate-500 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-lg transition-all text-sm font-medium"
+            className="flex-1 flex items-center gap-2 px-7 py-2 text-slate-500 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-lg transition-all text-sm font-medium"
           >
             <LogOut size={16} />
             <span>Logout</span>

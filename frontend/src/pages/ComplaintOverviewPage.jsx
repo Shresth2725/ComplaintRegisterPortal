@@ -134,14 +134,13 @@ const ComplaintOverviewPage = () => {
                     {[1, 2, 3, 4, 5].map((star) => (
                       <button
                         key={star}
-                        onClick={() => !complaint.rating && handleRating(star)}
-                        onMouseEnter={() => !complaint.rating && setHoverRating(star)}
-                        onMouseLeave={() => !complaint.rating && setHoverRating(0)}
+                        onClick={() => handleRating(star)}
+                        onMouseEnter={() => setHoverRating(star)}
+                        onMouseLeave={() => setHoverRating(0)}
                         className={`text-2xl transition-colors ${star <= (hoverRating || complaint.rating || rating)
                           ? "text-yellow-400"
                           : "text-slate-300 dark:text-slate-600"
-                          } ${!complaint.rating ? "cursor-pointer hover:scale-110" : "cursor-default"}`}
-                        disabled={!!complaint.rating}
+                          } cursor-pointer hover:scale-110`}
                       >
                         ★
                       </button>
