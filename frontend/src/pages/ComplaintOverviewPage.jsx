@@ -240,12 +240,13 @@ const ComplaintOverviewPage = () => {
 
           {/* CHAT BUTTON AT THE BOTTOM */}
           <div className="pt-6 text-center">
-            <button className="px-8 py-3 bg-blue-700 hover:bg-blue-800 text-white font-semibold rounded-lg shadow-sm transition-colors flex items-center gap-2 mx-auto">
+            <Link
+              to={`/complaint/${id}/chat`}
+              className="px-8 py-3 bg-blue-700 hover:bg-blue-800 text-white font-semibold rounded-lg shadow-sm transition-colors inline-flex items-center gap-2"
+            >
               <span>💬</span>
-              {isAdmin
-                ? `Chat with ${complaint.user?.fullName || 'User'}`
-                : "Chat with Admin"}
-            </button>
+              {isAdmin ? "Chat with User" : "Chat with Admin"}
+            </Link>
           </div>
         </div>
       </div>

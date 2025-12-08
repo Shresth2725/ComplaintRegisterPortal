@@ -14,6 +14,7 @@ import "./App.css";
 import ComplaintOverviewPage from "./pages/ComplaintOverviewPage";
 import AdminComplaintOverviewPage from "./pages/AdminComplaintOverviewPage";
 import OtpVerify from "./pages/OtpVerify";
+import ComplaintChat from "./pages/ComplaintChat";
 
 function App() {
   return (
@@ -51,6 +52,14 @@ function App() {
           element={
             <ProtectedRoute>
               <AdminComplaintOverviewPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/complaint/:complaintId/chat"
+          element={
+            <ProtectedRoute>
+              <ComplaintChat />
             </ProtectedRoute>
           }
         />
