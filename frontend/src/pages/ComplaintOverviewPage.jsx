@@ -9,6 +9,8 @@ const ComplaintOverviewPage = () => {
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState();
 
+  const [previewImage, setPreviewImage] = useState(null);
+
   const fetchComplaint = async () => {
     try {
       const res = await API.get(`/complaint/get-complaint-data/${id}`);
@@ -87,10 +89,10 @@ const ComplaintOverviewPage = () => {
                 <span className="text-slate-500 text-sm font-medium uppercase tracking-wider block mb-2">Current Status</span>
                 <span
                   className={`capitalize px-4 py-2 rounded-lg font-bold inline-block ${complaint.status === "resolved"
-                      ? "bg-green-100 text-green-700 border border-green-200"
-                      : complaint.status === "in progress"
-                        ? "bg-amber-100 text-amber-700 border border-amber-200"
-                        : "bg-red-100 text-red-700 border border-red-200"
+                    ? "bg-green-100 text-green-700 border border-green-200"
+                    : complaint.status === "in progress"
+                      ? "bg-amber-100 text-amber-700 border border-amber-200"
+                      : "bg-red-100 text-red-700 border border-red-200"
                     }`}
                 >
                   {complaint.status}
@@ -138,7 +140,10 @@ const ComplaintOverviewPage = () => {
               {complaint.beforeImageUrl && (
                 <div className="space-y-2">
                   <p className="text-slate-500 font-medium text-sm uppercase tracking-wider">Before</p>
-                  <div className="rounded-xl overflow-hidden border border-slate-200 shadow-sm bg-slate-50">
+                  <div
+                    className="rounded-xl overflow-hidden border border-slate-200 shadow-sm bg-slate-50 cursor-pointer"
+                    onClick={() => setPreviewImage(complaint.beforeImageUrl)}
+                  >
                     <img
                       src={complaint.beforeImageUrl}
                       className="w-full h-64 object-cover hover:scale-105 transition-transform duration-500"
@@ -152,7 +157,10 @@ const ComplaintOverviewPage = () => {
               <div className="space-y-2">
                 <p className="text-slate-500 font-medium text-sm uppercase tracking-wider">After</p>
                 {complaint.afterImageUrl ? (
-                  <div className="rounded-xl overflow-hidden border-2 border-green-100 shadow-sm bg-green-50/30">
+                  <div
+                    className="rounded-xl overflow-hidden border-2 border-green-100 shadow-sm bg-green-50/30 cursor-pointer"
+                    onClick={() => setPreviewImage(complaint.afterImageUrl)}
+                  >
                     <img
                       src={complaint.afterImageUrl}
                       className="w-full h-64 object-cover hover:scale-105 transition-transform duration-500"
@@ -196,6 +204,27 @@ const ComplaintOverviewPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Image Preview Modal */}
+      {previewImage && (
+        <div
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4"
+          onClick={() => setPreviewImage(null)}
+        >
+          <button
+            className="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 focus:outline-none"
+            onClick={() => setPreviewImage(null)}
+          >
+            &times;
+          </button>
+          <img
+            src={previewImage}
+            alt="Preview"
+            className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </div>
   );
 };
