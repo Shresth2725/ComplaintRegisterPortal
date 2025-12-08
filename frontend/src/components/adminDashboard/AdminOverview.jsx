@@ -52,6 +52,17 @@ const AdminOverview = ({ complaints }) => {
     displayName: item.name.replace(/_/g, " ").toUpperCase(),
   }));
 
+  const ratedComplaints = complaints.resolvedComplaint.filter(
+    (c) => c.rating > 0
+  );
+  const avgRating =
+    ratedComplaints.length > 0
+      ? (
+        ratedComplaints.reduce((acc, c) => acc + c.rating, 0) /
+        ratedComplaints.length
+      ).toFixed(1)
+      : "N/A";
+
   const colors = ["#3B82F6", "#8B5CF6", "#EC4899", "#10B981", "#F59E0B"];
 
   return (
@@ -62,7 +73,7 @@ const AdminOverview = ({ complaints }) => {
       </div>
 
       {/* STATS */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-8">
         <StatCard title="Total" value={total} color="slate" />
         <StatCard
           title="New"
@@ -78,6 +89,11 @@ const AdminOverview = ({ complaints }) => {
           title="Resolved"
           value={complaints.resolvedComplaint.length}
           color="green"
+        />
+        <StatCard
+          title="Avg Rating"
+          value={avgRating}
+          color="yellow"
         />
       </div>
 

@@ -9,20 +9,27 @@ const ComplaintCard = ({ complaint }) => {
               {new Date(complaint.createdAt).toLocaleDateString()}
             </span>
 
-            {/* Status Badge */}
-            <span
-              className={`
+            <div className="flex items-center gap-2">
+              {complaint.status === "resolved" && complaint.rating > 0 && (
+                <span className="text-yellow-500 font-bold text-sm flex items-center gap-1 bg-yellow-50 px-2 py-1 rounded-full border border-yellow-100">
+                  ★ {complaint.rating}
+                </span>
+              )}
+              {/* Status Badge */}
+              <span
+                className={`
                 px-3 py-1 rounded-full text-xs font-semibold
                 ${complaint.status === "resolved"
-                  ? "bg-green-100 text-green-700"
-                  : complaint.status === "in progress"
-                    ? "bg-amber-100 text-amber-700"
-                    : "bg-red-100 text-red-700"
-                }
+                    ? "bg-green-100 text-green-700"
+                    : complaint.status === "in progress"
+                      ? "bg-amber-100 text-amber-700"
+                      : "bg-red-100 text-red-700"
+                  }
               `}
-            >
-              {complaint.status.toUpperCase()}
-            </span>
+              >
+                {complaint.status.toUpperCase()}
+              </span>
+            </div>
           </div>
 
           {/* Description */}

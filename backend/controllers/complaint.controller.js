@@ -546,3 +546,49 @@ export const getComplaint = async (req, res) => {
     });
   }
 };
+
+// Rate a complaint
+export const rateComplaint = async (req, res) => {
+  try {
+    const complaintId = req.params.id;
+    const { rating } = req.body;
+
+    if (!rating || rating < 1 || rating > 5) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide a valid rating between 1 and 5",
+      });
+    }
+
+    const complaint = await Complaint.findById(complaintId);
+
+    if (!complaint) {
+      return res.status(404).json({
+        success: false,
+        message: "Complaint not found",
+      });
+    }
+
+    if (complaint.status !== "resolved") {
+      return res.status(400).json({
+        success: false,
+        message: "You can only rate resolved complaints",
+      });
+    }
+
+    complaint.rating = rating;
+    await complaint.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Complaint rated successfully",
+      complaint,
+    });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({
+      success: false,
+      message: `Error in rate complaint API: ${error.message}`,
+    });
+  }
+};

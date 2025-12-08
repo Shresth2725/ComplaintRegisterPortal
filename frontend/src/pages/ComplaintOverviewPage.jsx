@@ -10,6 +10,20 @@ const ComplaintOverviewPage = () => {
   const [isAdmin, setIsAdmin] = useState();
 
   const [previewImage, setPreviewImage] = useState(null);
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+
+  const handleRating = async (value) => {
+    try {
+      const res = await API.post(`/complaint/rate/${id}`, { rating: value });
+      if (res.data.success) {
+        setComplaint({ ...complaint, rating: value });
+        setRating(value);
+      }
+    } catch (error) {
+      console.error("Error submitting rating:", error);
+    }
+  };
 
   const fetchComplaint = async () => {
     try {
@@ -99,12 +113,43 @@ const ComplaintOverviewPage = () => {
                 </span>
               </div>
 
+
+
               {complaint.category && (
-                <div>
+                <div className="mb-4">
                   <span className="text-slate-500 text-sm font-medium uppercase tracking-wider block mb-2">Category</span>
                   <p className="text-slate-900 font-medium">
                     {complaint.category.replace(/_/g, " ")}
                   </p>
+                </div>
+              )}
+
+              {/* Rating Section */}
+              {complaint.status === "resolved" && !isAdmin && (
+                <div>
+                  <span className="text-slate-500 text-sm font-medium uppercase tracking-wider block mb-2">
+                    {complaint.rating ? "Your Rating" : "Rate Resolution"}
+                  </span>
+                  <div className="flex gap-1">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        onClick={() => !complaint.rating && handleRating(star)}
+                        onMouseEnter={() => !complaint.rating && setHoverRating(star)}
+                        onMouseLeave={() => !complaint.rating && setHoverRating(0)}
+                        className={`text-2xl transition-colors ${star <= (hoverRating || complaint.rating || rating)
+                          ? "text-yellow-400"
+                          : "text-slate-300"
+                          } ${!complaint.rating ? "cursor-pointer hover:scale-110" : "cursor-default"}`}
+                        disabled={!!complaint.rating}
+                      >
+                        ★
+                      </button>
+                    ))}
+                  </div>
+                  {complaint.rating > 0 && (
+                    <p className="text-xs text-slate-500 mt-1">Thank you for your feedback!</p>
+                  )}
                 </div>
               )}
             </div>
@@ -206,26 +251,28 @@ const ComplaintOverviewPage = () => {
       </div>
 
       {/* Image Preview Modal */}
-      {previewImage && (
-        <div
-          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4"
-          onClick={() => setPreviewImage(null)}
-        >
-          <button
-            className="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 focus:outline-none"
+      {
+        previewImage && (
+          <div
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/90 p-4"
             onClick={() => setPreviewImage(null)}
           >
-            &times;
-          </button>
-          <img
-            src={previewImage}
-            alt="Preview"
-            className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          />
-        </div>
-      )}
-    </div>
+            <button
+              className="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 focus:outline-none"
+              onClick={() => setPreviewImage(null)}
+            >
+              &times;
+            </button>
+            <img
+              src={previewImage}
+              alt="Preview"
+              className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        )
+      }
+    </div >
   );
 };
 

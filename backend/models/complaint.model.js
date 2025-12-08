@@ -75,6 +75,12 @@ const complaintSchema = new mongoose.Schema(
       default: "new",
       lowercase: true,
     },
+    rating: {
+      type: Number,
+      min: 1,
+      max: 5,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

@@ -130,6 +130,20 @@ const AdminComplaintOverviewPage = () => {
                             <h3 className="text-lg font-bold text-blue-900 mb-4">Admin Actions</h3>
 
                             <div className="space-y-6">
+                                {complaint.rating > 0 && (
+                                    <div className="bg-white p-4 rounded-lg border border-blue-200">
+                                        <p className="text-sm font-semibold text-blue-800 mb-1">User Rating</p>
+                                        <div className="flex items-center gap-2">
+                                            <div className="flex text-yellow-400 text-xl">
+                                                {[...Array(5)].map((_, i) => (
+                                                    <span key={i}>{i < complaint.rating ? "★" : "☆"}</span>
+                                                ))}
+                                            </div>
+                                            <span className="text-blue-900 font-bold">{complaint.rating}/5</span>
+                                        </div>
+                                    </div>
+                                )}
+
                                 <div>
                                     <label className="block text-sm font-semibold text-blue-800 mb-2">Update Status</label>
                                     <select

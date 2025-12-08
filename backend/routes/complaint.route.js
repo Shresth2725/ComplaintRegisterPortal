@@ -8,6 +8,7 @@ import {
   updateAfterImageUrl,
   updateComplaint,
   updateComplaintStatus,
+  rateComplaint,
 } from "../controllers/complaint.controller.js";
 import { protectRoute } from "../middleware/auth.middleware.js";
 import { upload } from "../middleware/uploads.js";
@@ -52,5 +53,7 @@ complaintRouter.post(
 );
 
 complaintRouter.get("/get-complaint-data/:id", protectRoute, getComplaint);
+
+complaintRouter.post("/rate/:id", protectRoute, rateComplaint);
 
 export default complaintRouter;

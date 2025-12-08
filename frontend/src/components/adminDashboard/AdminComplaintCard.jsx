@@ -62,6 +62,12 @@ const AdminComplaintCard = ({ complaint }) => {
               {c.status}
             </span>
 
+            {c.status === "resolved" && c.rating > 0 && (
+              <span className="text-yellow-600 font-bold text-xs flex items-center gap-1 bg-yellow-50 px-2 py-1 rounded-full border border-yellow-200">
+                ★ {c.rating}/5
+              </span>
+            )}
+
             <span className="text-sm text-slate-500 ml-auto">
               Click to manage
             </span>
