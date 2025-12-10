@@ -73,6 +73,7 @@ const Dashboard = () => {
 
   const logout = () => {
     localStorage.removeItem("userData");
+    localStorage.removeItem("token");
     navigate("/");
   };
 
