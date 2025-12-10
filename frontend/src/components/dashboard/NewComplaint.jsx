@@ -17,19 +17,54 @@ const NewComplaint = ({
   const handleFile = (e) =>
     setFormData({ ...formData, imageUrl: e.target.files[0] });
 
-  // Fetch GPS
+  // Fetch GPS and Reverse Geocode
   const getLocation = () => {
     if (!navigator.geolocation)
       return setMessage({ type: "error", text: "Geolocation not supported" });
 
+    setMessage({ type: "success", text: "Fetching location..." });
+
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setFormData({
-          ...formData,
-          latitude: pos.coords.latitude.toString(),
-          longitude: pos.coords.longitude.toString(),
-        });
-        setMessage({ type: "success", text: "Location fetched!" });
+      async (pos) => {
+        const lat = pos.coords.latitude.toString();
+        const lng = pos.coords.longitude.toString();
+
+        // Update coordinates immediately
+        setFormData((prev) => ({
+          ...prev,
+          latitude: lat,
+          longitude: lng,
+        }));
+
+        try {
+          // Reverse Geocoding via OpenStreetMap (Nominatim)
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+          );
+          const data = await response.json();
+
+          if (data && data.address) {
+            const city =
+              data.address.city ||
+              data.address.town ||
+              data.address.village ||
+              data.address.municipality ||
+              "";
+            const state = data.address.state || "";
+
+            setFormData((prev) => ({
+              ...prev,
+              city,
+              state,
+            }));
+            setMessage({ type: "success", text: "Location & Address fetched!" });
+          } else {
+            setMessage({ type: "success", text: "Location fetched (Address unavailable)" });
+          }
+        } catch (error) {
+          console.error("Geocoding error:", error);
+          setMessage({ type: "success", text: "Location fetched (Address failed)" });
+        }
       },
       () => setMessage({ type: "error", text: "Unable to fetch location" })
     );

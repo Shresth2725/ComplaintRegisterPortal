@@ -45,7 +45,7 @@ const AdminDashboard = () => {
 
   const logout = () => {
     localStorage.removeItem("userData");
-    navigate("/login");
+    navigate("/");
   };
 
   return (

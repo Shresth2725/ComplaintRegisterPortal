@@ -73,7 +73,7 @@ const Dashboard = () => {
 
   const logout = () => {
     localStorage.removeItem("userData");
-    navigate("/login");
+    navigate("/");
   };
 
   return (
