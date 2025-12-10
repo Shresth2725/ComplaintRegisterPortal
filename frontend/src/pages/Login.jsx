@@ -8,7 +8,6 @@ const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    isAdmin: false,
   });
 
   const [error, setError] = useState("");
@@ -17,10 +16,10 @@ const Login = () => {
 
   // Handle input changes
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: value,
     });
   };
 
@@ -129,24 +128,6 @@ const Login = () => {
                 placeholder="••••••••"
                 className="w-full px-4 py-3 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
               />
-            </div>
-
-            {/* Admin Checkbox */}
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="isAdmin"
-                name="isAdmin"
-                checked={formData.isAdmin}
-                onChange={handleChange}
-                className="w-4 h-4 text-blue-600 border-slate-300 dark:border-slate-600 rounded focus:ring-blue-500 cursor-pointer bg-white dark:bg-slate-900"
-              />
-              <label
-                htmlFor="isAdmin"
-                className="ml-3 text-sm font-medium text-slate-700 dark:text-slate-300 cursor-pointer"
-              >
-                Login as Admin
-              </label>
             </div>
 
             {/* Submit Button */}
