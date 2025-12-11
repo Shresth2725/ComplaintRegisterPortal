@@ -9,12 +9,28 @@ const AllComplaints = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [filter, setFilter] = useState("all");
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  // Debounce search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  // Reset page when search or filter changes
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch, filter]);
 
   const fetchComplaints = async () => {
     setLoading(true);
     try {
       const res = await API.get(
-        `/complaint/admin/list?page=${page}&limit=10&status=${filter}`
+        `/complaint/admin/list?page=${page}&limit=10&status=${filter}&search=${debouncedSearch}`
       );
       if (res.data.success) {
         setComplaints(res.data.complaints);
@@ -29,11 +45,10 @@ const AllComplaints = () => {
 
   useEffect(() => {
     fetchComplaints();
-  }, [page, filter]);
+  }, [page, debouncedSearch, filter]);
 
   const handleFilterChange = (e) => {
     setFilter(e.target.value);
-    setPage(1); // Reset to page 1 on filter change
   };
 
   const handlePrev = () => {
@@ -44,25 +59,38 @@ const AllComplaints = () => {
     if (page < totalPages) setPage(page + 1);
   };
 
-  if (loading && page === 1 && complaints.length === 0)
-    return <p className="text-slate-500 dark:text-slate-400 text-center py-8">Loading...</p>;
+
 
   return (
     <div className="space-y-6">
-      {/* FILTER HEADER */}
-      <div className="flex justify-between items-center mb-6">
+      {/* FILTER & SEARCH */}
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
         <h2 className="text-xl font-bold text-slate-900 dark:text-white">All Complaints</h2>
 
-        <select
-          value={filter}
-          onChange={handleFilterChange}
-          className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm transition-colors"
-        >
-          <option value="all">All Status</option>
-          <option value="new">New</option>
-          <option value="in progress">In Progress</option>
-          <option value="resolved">Resolved</option>
-        </select>
+        <div className="flex flex-wrap gap-4 w-full md:w-auto">
+          {/* SEARCH INPUT */}
+          <div className="relative flex-1 md:flex-initial">
+            <input
+              type="text"
+              placeholder="Search ID, desc, city..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full md:w-64 pl-10 pr-4 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm transition-colors"
+            />
+            <span className="absolute left-3 top-2.5 text-slate-400">🔍</span>
+          </div>
+
+          <select
+            value={filter}
+            onChange={handleFilterChange}
+            className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm transition-colors"
+          >
+            <option value="all">All Status</option>
+            <option value="new">New</option>
+            <option value="in progress">In Progress</option>
+            <option value="resolved">Resolved</option>
+          </select>
+        </div>
       </div>
 
       {/* LIST */}

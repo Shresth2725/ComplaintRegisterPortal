@@ -31,9 +31,14 @@ const AdminComplaintCard = ({ complaint }) => {
         {/* DETAILS */}
         <div className="flex-1">
           <div className="flex justify-between items-start">
-            <h3 className="text-xl text-slate-900 dark:text-white font-bold">
-              {c.category?.replace("_", " ").toUpperCase()}
-            </h3>
+            <div>
+              <h3 className="text-xl text-slate-900 dark:text-white font-bold">
+                {c.category?.replace("_", " ").toUpperCase()}
+              </h3>
+              <p className="text-lg text-slate-500 dark:text-slate-400 font-mono mt-1 select-all">
+                ID: {c._id}
+              </p>
+            </div>
             <span className="text-sm text-slate-500 dark:text-slate-400">
               {new Date(c.createdAt).toLocaleDateString()}
             </span>

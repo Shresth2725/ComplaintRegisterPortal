@@ -83,9 +83,14 @@ const AdminComplaintOverviewPage = () => {
                     ← Back to Admin Dashboard
                 </Link>
 
-                <div className="flex justify-between items-center mb-8">
-                    <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Admin Complaint Management</h1>
-                    {updating && <span className="text-blue-600 dark:text-blue-400 font-medium animate-pulse">Updating...</span>}
+                <div className="mb-8">
+                    <div className="flex justify-between items-center">
+                        <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Admin Complaint Management</h1>
+                        {updating && <span className="text-blue-600 dark:text-blue-400 font-medium animate-pulse">Updating...</span>}
+                    </div>
+                    <p className="text-lg text-slate-500 dark:text-slate-400 mt-1 font-mono select-all">
+                        ID: {id}
+                    </p>
                 </div>
 
                 {/* Toast Message */}

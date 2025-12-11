@@ -647,6 +647,28 @@ export const getPaginatedComplaints = async (req, res) => {
       query.status = status;
     }
 
+    const { search } = req.query;
+    if (search) {
+      // Escape special characters to prevent invalid regex errors
+      const safeSearch = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const searchRegex = new RegExp(safeSearch, "i");
+
+      const searchConditions = [
+        { description: searchRegex },
+        { category: searchRegex },
+        { city: searchRegex },
+        { state: searchRegex },
+        { landmark: searchRegex },
+      ];
+
+      // If search looks like a valid ObjectId, try to search by _id
+      if (search.match(/^[0-9a-fA-F]{24}$/)) {
+        searchConditions.push({ _id: search });
+      }
+
+      query.$or = searchConditions;
+    }
+
     const total = await Complaint.countDocuments(query);
     const totalPages = Math.ceil(total / limit);
     const skip = (page - 1) * limit;
