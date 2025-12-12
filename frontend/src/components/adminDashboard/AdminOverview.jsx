@@ -108,10 +108,10 @@ const AdminOverview = ({ complaints }) => {
               <PieChart>
                 <Pie
                   data={pieData}
-                  innerRadius={60}
+                  innerRadius={0}
                   outerRadius={80}
                   dataKey="value"
-                  paddingAngle={5}
+                  paddingAngle={0}
                 >
                   {pieData.map((entry, idx) => (
                     <Cell key={idx} fill={entry.color} stroke="none" />
