@@ -35,7 +35,7 @@ const ChatBox = ({ messages, onSendMessage, currentUserId }) => {
             <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-50/50 dark:bg-slate-900/50">
                 {messages.length === 0 ? (
                     <div className="flex items-center justify-center h-full text-slate-400 dark:text-slate-500">
-                        No messages yet. Start the conversation!
+                        No messages yet. Start a conversation!
                     </div>
                 ) : (
                     messages.map((msg, index) => {

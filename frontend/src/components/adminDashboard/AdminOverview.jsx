@@ -150,7 +150,7 @@ const AdminOverview = ({ complaints }) => {
               </PieChart>
             </ResponsiveContainer>
             {/* Center Text */}
-            <div className="absolute top-[60%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center pb-4">
+            <div className="absolute top-[70%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center pb-4">
               <span className="text-4xl font-bold text-slate-900 dark:text-white">{avgRating}</span>
               <span className="text-xs text-slate-500 dark:text-slate-400 block">/ 5.0</span>
             </div>
