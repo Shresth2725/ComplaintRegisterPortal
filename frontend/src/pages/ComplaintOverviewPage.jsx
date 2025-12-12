@@ -100,7 +100,7 @@ const ComplaintOverviewPage = () => {
               <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Status & Category</h3>
 
               <div className="mb-4">
-                <span className="text-slate-500 text-sm font-medium uppercase tracking-wider block mb-2">Current Status</span>
+                <span className="text-slate-500 dark:text-slate-400 text-sm font-medium uppercase tracking-wider block mb-2">Current Status</span>
                 <span
                   className={`capitalize px-4 py-2 rounded-lg font-bold inline-block ${complaint.status === "resolved"
                     ? "bg-green-100 text-green-700 border border-green-200"
@@ -117,8 +117,8 @@ const ComplaintOverviewPage = () => {
 
               {complaint.category && (
                 <div className="mb-4">
-                  <span className="text-slate-500 text-sm font-medium uppercase tracking-wider block mb-2">Category</span>
-                  <p className="text-slate-900 font-medium">
+                  <span className="text-slate-500 dark:text-slate-400 text-sm font-medium uppercase tracking-wider block mb-2">Category</span>
+                  <p className="text-slate-900 dark:text-white font-medium">
                     {complaint.category.replace(/_/g, " ")}
                   </p>
                 </div>
@@ -127,7 +127,7 @@ const ComplaintOverviewPage = () => {
               {/* Rating Section */}
               {complaint.status === "resolved" && !isAdmin && (
                 <div>
-                  <span className="text-slate-500 text-sm font-medium uppercase tracking-wider block mb-2">
+                  <span className="text-slate-500 dark:text-slate-400 text-sm font-medium uppercase tracking-wider block mb-2">
                     {complaint.rating ? "Your Rating" : "Rate Resolution"}
                   </span>
                   <div className="flex gap-1">
@@ -199,7 +199,7 @@ const ComplaintOverviewPage = () => {
 
               {/* After Image */}
               <div className="space-y-2">
-                <p className="text-slate-500 font-medium text-sm uppercase tracking-wider">After</p>
+                <p className="text-slate-500 dark:text-slate-400 font-medium text-sm uppercase tracking-wider">After</p>
                 {complaint.afterImageUrl ? (
                   <div
                     className="rounded-xl overflow-hidden border-2 border-green-100 shadow-sm bg-green-50/30 cursor-pointer"
