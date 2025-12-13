@@ -16,6 +16,8 @@ import ComplaintOverviewPage from "./pages/ComplaintOverviewPage";
 import AdminComplaintOverviewPage from "./pages/AdminComplaintOverviewPage";
 import OtpVerify from "./pages/OtpVerify";
 import ComplaintChat from "./pages/ComplaintChat";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 function App() {
   return (
@@ -66,6 +68,8 @@ function App() {
             }
           />
           <Route path="/otp-verify" element={<OtpVerify />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:id" element={<ResetPasswordPage />} />
         </Routes>
       </ThemeProvider>
     </Router>

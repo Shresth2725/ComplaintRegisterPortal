@@ -8,6 +8,9 @@ import {
   updateProfile,
   checkAuth,
   googleLogin,
+  verifyPasswordResetOtp,
+  sendPasswordResetOtp,
+  resetPassword,
 } from "../controllers/user.controller.js";
 
 import { protectRoute } from "../middleware/auth.middleware.js";
@@ -37,5 +40,11 @@ authRouter.post(
 
 // GOOGLE OAUTH
 authRouter.post("/google-login", googleLogin);
+
+authRouter.post("/sendPasswordResetOtp", sendPasswordResetOtp);
+
+authRouter.post("/verifyPasswordResetOtp", verifyPasswordResetOtp);
+
+authRouter.post("/reset-password", resetPassword);
 
 export default authRouter;

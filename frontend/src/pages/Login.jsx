@@ -68,16 +68,27 @@ const Login = () => {
     }
   };
 
+  const handleForgotPassword = () => {
+    navigate("/forgot-password");
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center p-4 font-sans transition-colors">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <Link to="/" className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight mb-2 inline-block">
+          <Link
+            to="/"
+            className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight mb-2 inline-block"
+          >
             ComplaintPortal
           </Link>
-          <h1 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">Welcome Back</h1>
-          <p className="text-slate-600 dark:text-slate-400">Login to your account to continue</p>
+          <h1 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-2">
+            Welcome Back
+          </h1>
+          <p className="text-slate-600 dark:text-slate-400">
+            Login to your account to continue
+          </p>
         </div>
 
         {/* Card */}
@@ -85,7 +96,9 @@ const Login = () => {
           {/* Error Message */}
           {error && (
             <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/30 rounded-lg">
-              <p className="text-red-700 dark:text-red-300 text-sm font-medium">{error}</p>
+              <p className="text-red-700 dark:text-red-300 text-sm font-medium">
+                {error}
+              </p>
             </div>
           )}
 
@@ -154,7 +167,9 @@ const Login = () => {
                 <div className="w-full border-t border-slate-200 dark:border-slate-700"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400">Or continue with</span>
+                <span className="px-2 bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400">
+                  Or continue with
+                </span>
               </div>
             </div>
             <div className="flex justify-center">
@@ -180,6 +195,7 @@ const Login = () => {
           <p className="mt-3 text-center text-sm">
             <button
               type="button"
+              onClick={handleForgotPassword}
               className="text-blue-700 hover:text-blue-800 font-semibold hover:underline"
             >
               Forgot Password?
