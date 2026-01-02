@@ -69,10 +69,7 @@ npm run dev
 npm run dev
 
 The application will run on:
-http://localhost:3000
-
-markdown
-Copy code
+http://localhost:5173
 
 ## How It Works
 
