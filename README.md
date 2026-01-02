@@ -39,23 +39,6 @@ The system is designed to simplify complaint handling with cloud storage, locati
 - RESTful APIs  
 - Git and GitHub  
 
-## Project Structure
-
-complaint-registration-portal/
-│
-├── client/ # React frontend
-│ ├── src/
-│ └── package.json
-│
-├── server/ # Node.js + Express backend
-│ ├── routes/
-│ ├── controllers/
-│ ├── models/
-│ ├── utils/
-│ └── index.js
-│
-└── README.md
-
 ## Installation and Setup
 
 1. Clone the repository
