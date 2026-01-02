@@ -53,16 +53,14 @@ cd client
 npm install
 
 4. Create a `.env` file inside the server folder
-PORT=5000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_secret_key
-
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
-
-EMAIL_USER=your_email_address
-EMAIL_PASS=your_email_password
+ - PORT=5000
+ - MONGO_URI=your_mongodb_connection_string
+ - JWT_SECRET=your_secret_key
+ - CLOUDINARY_CLOUD_NAME=your_cloud_name
+ - CLOUDINARY_API_KEY=your_api_key
+ - CLOUDINARY_API_SECRET=your_api_secret
+ - EMAIL_USER=your_email_address
+ - EMAIL_PASS=your_email_password
 
 5. Start the backend server
 npm run dev
